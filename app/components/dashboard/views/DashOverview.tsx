@@ -90,14 +90,14 @@ export default function DashOverview() {
           ? Array.from({ length: 4 }).map((_, i) => <CardSkeleton key={i}/>)
           : STAT_CARDS.map((c, i) => (
             <motion.div key={c.label} initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay: i*0.07 }}
-              className="p-4 relative overflow-hidden"
+              className="p-3 md:p-4 relative overflow-hidden"
               style={{ background: "rgba(14,17,24,0.8)", border: "1px solid rgba(37,45,61,0.45)", borderRadius: 8 }}>
               <div className="flex items-center justify-between mb-3">
                 <div className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold"
                   style={{ background: "rgba(37,45,61,0.5)", color: c.accent }}>{c.icon}</div>
               </div>
               <div className="text-xs mb-1" style={{ color: "#4a5568" }}>{c.label}</div>
-              <div className="text-xl font-bold tabular-nums" style={{ color: "#f0ede8", letterSpacing: "-0.02em" }}>{c.value}</div>
+              <div className="text-base md:text-xl font-bold tabular-nums" style={{ color: "#f0ede8", letterSpacing: "-0.02em" }}>{c.value}</div>
               <div className="absolute bottom-0 left-0 right-0 h-0.5" style={{ background: `linear-gradient(90deg, ${c.accent}, transparent)` }}/>
             </motion.div>
           ))
@@ -106,9 +106,9 @@ export default function DashOverview() {
 
       {/* Chart */}
       <motion.div initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.3 }}
-        className="p-5"
+        className="p-3 md:p-5"
         style={{ background: "rgba(14,17,24,0.8)", border: "1px solid rgba(37,45,61,0.45)", borderRadius: 8 }}>
-        <h2 className="text-sm font-bold mb-4" style={{ color: "#f0ede8" }}>Equity Curve</h2>
+        <h2 className="text-sm font-bold mb-3 md:mb-4" style={{ color: "#f0ede8" }}>Equity Curve</h2>
         {loading
           ? <div className="h-36 animate-pulse rounded" style={{ background: "rgba(37,45,61,0.3)" }}/>
           : <EquityLine curve={data?.equityCurve ?? []}/>
@@ -126,7 +126,7 @@ export default function DashOverview() {
             ? <p className="text-sm text-center py-8" style={{ color: "#4a5568" }}>No closed trades yet.</p>
             : (
               <div className="overflow-x-auto">
-                <table className="w-full text-sm">
+                <table className="w-full text-sm" style={{ minWidth: 540 }}>
                   <thead>
                     <tr style={{ borderBottom: "1px solid rgba(37,45,61,0.4)" }}>
                       {["Symbol","Type","Volume","Open","Close","Time","Profit"].map(h => (

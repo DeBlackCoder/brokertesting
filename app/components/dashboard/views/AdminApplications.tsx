@@ -98,14 +98,14 @@ export default function AdminApplications() {
       </div>
 
       {/* Table */}
-      <div style={{ background: "rgba(14,17,24,0.8)", border: "1px solid rgba(37,45,61,0.45)", borderRadius: 8, overflow: "hidden" }}>
+      <div style={{ background: "rgba(14,17,24,0.8)", border: "1px solid rgba(37,45,61,0.45)", borderRadius: 8, overflowX: "auto" }}>
         {loading ? (
           <div className="p-10 text-center text-sm" style={{ color: "#4a5568" }}>Loading applications…</div>
         ) : !data?.applications.length ? (
           <div className="p-10 text-center text-sm" style={{ color: "#4a5568" }}>No applications found.</div>
         ) : (
           <>
-            <table className="w-full text-sm">
+            <table className="w-full text-sm" style={{ minWidth: 620 }}>
               <thead>
                 <tr style={{ borderBottom: "1px solid rgba(37,45,61,0.4)" }}>
                   {["Applicant","Type","Country","Income","Status","Submitted","Actions"].map(h => (

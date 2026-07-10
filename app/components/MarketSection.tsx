@@ -97,7 +97,7 @@ export default function MarketSection() {
     <section
       id="markets"
       ref={ref}
-      className="relative py-40 px-6 overflow-hidden"
+      className="relative py-16 md:py-40 px-4 md:px-6 overflow-hidden"
       style={{ background: "linear-gradient(180deg, #080a0f 0%, #0e1118 50%, #080a0f 100%)" }}
     >
       {/* Real forex/candlestick chart photograph — Maxim Hopman / Unsplash (free) */}
@@ -127,7 +127,7 @@ export default function MarketSection() {
       </div>
       <div className="max-w-7xl mx-auto">
         {/* Section header */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-24">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 mb-10 lg:mb-24">
           <div>
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -146,7 +146,7 @@ export default function MarketSection() {
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="font-bold leading-none mb-6"
-              style={{ fontSize: "clamp(2.5rem, 5vw, 5.5rem)", letterSpacing: "-0.03em", color: "#f0ede8" }}
+              style={{ fontSize: "clamp(1.75rem, 4.5vw, 5.5rem)", letterSpacing: "-0.03em", color: "#f0ede8" }}
             >
               Every market.
               <br />
@@ -179,7 +179,7 @@ export default function MarketSection() {
                 animate={inView ? { opacity: 1, x: 0 } : {}}
                 transition={{ delay: 0.2 + i * 0.08, duration: 0.5 }}
                 onClick={() => setActiveMarket(i)}
-                className="group relative text-left p-6 flex items-center justify-between"
+                className="group relative text-left p-3 md:p-6 flex items-center justify-between"
                 style={{
                   borderLeft: `2px solid ${activeMarket === i ? m.color : "rgba(37,45,61,0.4)"}`,
                   background: activeMarket === i ? `rgba(${colorRgb(m.color)},0.05)` : "transparent",
@@ -189,7 +189,7 @@ export default function MarketSection() {
               >
                 <div>
                   <div
-                    className="text-base font-bold mb-1"
+                    className="text-sm md:text-base font-bold mb-1"
                     style={{ color: activeMarket === i ? "#f0ede8" : "#9fa8b4", transition: "color 0.2s" }}
                   >
                     {m.category}
@@ -213,7 +213,7 @@ export default function MarketSection() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.35 }}
-                className="h-full p-10"
+                className="h-full p-5 md:p-10"
                 style={{
                   border: "1px solid rgba(37,45,61,0.5)",
                   background: "rgba(14,17,24,0.6)",
@@ -223,7 +223,7 @@ export default function MarketSection() {
                 <div className="flex items-start justify-between mb-8">
                   <div>
                     <h3
-                      className="text-3xl font-bold mb-2"
+                      className="text-xl md:text-3xl font-bold mb-2"
                       style={{ color: "#f0ede8", letterSpacing: "-0.02em" }}
                     >
                       {MARKETS[activeMarket].category}

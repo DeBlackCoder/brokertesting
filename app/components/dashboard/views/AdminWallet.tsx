@@ -211,7 +211,7 @@ export default function AdminWallet() {
           <p className="text-sm text-center py-8" style={{ color:"#4a5568" }}>No users found.</p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full">
+            <table className="w-full" style={{ minWidth: 640 }}>
               <thead>
                 <tr style={{ borderBottom:"1px solid rgba(37,45,61,0.4)" }}>
                   {["User","Email","Role","KYC","Status","Joined","Action"].map((h,i) => (

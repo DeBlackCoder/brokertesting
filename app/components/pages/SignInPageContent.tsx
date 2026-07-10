@@ -121,7 +121,7 @@ export default function SignInPageContent() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="p-8"
+          className="p-6 md:p-8"
           style={{ border: "1px solid rgba(37,45,61,0.5)", background: "rgba(14,17,24,0.8)", borderRadius: "4px", backdropFilter: "blur(20px)" }}
         >
           {/* Error banner */}

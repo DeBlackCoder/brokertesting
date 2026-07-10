@@ -304,7 +304,7 @@ export default function OpenAccountPageContent() {
             <div className="w-8 h-px" style={{ background: "#10d48e" }} />
             <span className="text-xs tracking-widest uppercase" style={{ color: "#10d48e" }}>Account Application</span>
           </div>
-          <h1 className="text-4xl font-bold mb-3" style={{ color: "#f0ede8", letterSpacing: "-0.03em" }}>Open your account.</h1>
+          <h1 className="text-2xl md:text-4xl font-bold mb-3" style={{ color: "#f0ede8", letterSpacing: "-0.03em" }}>Open your account.</h1>
           <p className="text-sm" style={{ color: "#6b7a8d" }}>Applications reviewed within 24 hours.</p>
         </div>
 
@@ -331,7 +331,7 @@ export default function OpenAccountPageContent() {
         {/* Step cards */}
         <AnimatePresence mode="wait">
           <motion.div key={step} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }}
-            className="p-8" style={{ border: "1px solid rgba(37,45,61,0.4)", background: "rgba(14,17,24,0.7)", borderRadius: "4px", backdropFilter: "blur(20px)" }}>
+            className="p-5 md:p-8" style={{ border: "1px solid rgba(37,45,61,0.4)", background: "rgba(14,17,24,0.7)", borderRadius: "4px", backdropFilter: "blur(20px)" }}>
 
             {/* ── Step 1 ── */}
             {step === 1 && (

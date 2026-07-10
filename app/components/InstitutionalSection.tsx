@@ -72,7 +72,7 @@ export default function InstitutionalSection() {
     <section
       id="institutional"
       ref={ref}
-      className="relative py-40 px-6 overflow-hidden"
+      className="relative py-16 md:py-40 px-4 md:px-6 overflow-hidden"
       style={{ background: "#080a0f" }}
     >
       <div
@@ -85,7 +85,7 @@ export default function InstitutionalSection() {
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
-        <div className="mb-20">
+        <div className="mb-8 md:mb-20">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
@@ -102,7 +102,7 @@ export default function InstitutionalSection() {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="font-bold leading-none max-w-3xl"
-            style={{ fontSize: "clamp(2.5rem, 5vw, 5.5rem)", letterSpacing: "-0.03em", color: "#f0ede8" }}
+            style={{ fontSize: "clamp(1.75rem, 4.5vw, 5.5rem)", letterSpacing: "-0.03em", color: "#f0ede8" }}
           >
             Trusted by those
             <br />
@@ -112,28 +112,28 @@ export default function InstitutionalSection() {
 
         {/* Partner marquee */}
         <div
-          className="mb-20"
+          className="mb-8 md:mb-20"
           style={{ borderTop: "1px solid rgba(37,45,61,0.4)", borderBottom: "1px solid rgba(37,45,61,0.4)" }}
         >
           <LogoMarquee />
         </div>
 
         {/* Trust metrics */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-0 mb-24">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-0 mb-10 md:mb-24">
           {TRUST_METRICS.map((m, i) => (
             <motion.div
               key={m.label}
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.2 + i * 0.1 }}
-              className="p-8"
+              className="p-4 md:p-8"
               style={{
                 borderRight: i < 3 ? "1px solid rgba(37,45,61,0.4)" : "none",
                 borderTop: "1px solid rgba(37,45,61,0.4)",
               }}
             >
               <div
-                className="text-3xl font-bold mb-2 text-gradient-gold"
+                className="text-xl md:text-3xl font-bold mb-1 md:mb-2 text-gradient-gold"
                 style={{ letterSpacing: "-0.02em" }}
               >
                 {m.value}
@@ -152,7 +152,7 @@ export default function InstitutionalSection() {
               initial={{ opacity: 0, y: 30 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.3 + i * 0.12, duration: 0.7 }}
-              className="relative p-8 group"
+              className="relative p-5 md:p-8 group"
               style={{
                 border: "1px solid rgba(37,45,61,0.4)",
                 background: "rgba(14,17,24,0.6)",

@@ -177,7 +177,7 @@ export default function AdminUsers() {
         ) : !data?.users.length ? (
           <div className="p-10 text-center text-sm" style={{ color:"#4a5568" }}>No users found.</div>
         ) : (
-          <table className="w-full">
+          <table className="w-full" style={{ minWidth: 580 }}>
             <thead>
               <tr style={{ borderBottom:"1px solid rgba(37,45,61,0.4)" }}>
                 {["User","Role","KYC","Status","Joined",""].map(h => (

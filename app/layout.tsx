@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import TickerBar from "./components/TickerBar";
@@ -14,6 +14,14 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,   // prevent iOS auto-zoom on input focus
+  userScalable: false,
+  viewportFit: "cover", // support notch safe-area
+};
 
 export const metadata: Metadata = {
   title: "AUREX — Elite Investment & Trading",
@@ -37,7 +45,7 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col noise" style={{ paddingBottom: "var(--ticker-h, 40px)" }}>
+      <body className="min-h-full flex flex-col noise">
         {children}
         <TickerBar />
       </body>

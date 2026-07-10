@@ -170,7 +170,7 @@ export default function PositionsTable({ prices, onRefresh, positions, history, 
           {!positions.length ? (
             <div className="py-10 text-center text-xs" style={{ color:"#4a5568" }}>No open positions. Place a trade above.</div>
           ) : (
-            <table className="w-full">
+            <table className="w-full" style={{ minWidth: 640 }}>
               <thead>
                 <tr style={{ borderBottom:"1px solid rgba(37,45,61,0.3)" }}>
                   {["Symbol","Side","Lots","Entry","Current","Live PnL","SL","TP","Time",""].map((h,i) => (
@@ -250,7 +250,7 @@ export default function PositionsTable({ prices, onRefresh, positions, history, 
           {!history.length ? (
             <div className="py-10 text-center text-xs" style={{ color:"#4a5568" }}>No closed positions yet.</div>
           ) : (
-            <table className="w-full">
+            <table className="w-full" style={{ minWidth: 560 }}>
               <thead>
                 <tr style={{ borderBottom:"1px solid rgba(37,45,61,0.3)" }}>
                   {["Symbol","Side","Lots","Entry","Exit","PnL","Reason","Date"].map((h,i) => (

@@ -108,7 +108,7 @@ export default function DashPayouts() {
               <motion.div key={c.label} initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay: i*0.07 }}
                 className="p-5" style={{ background: "rgba(14,17,24,0.8)", border: "1px solid rgba(37,45,61,0.45)", borderRadius: 8 }}>
                 <div className="text-xs mb-2" style={{ color: "#4a5568" }}>{c.label}</div>
-                <div className="text-2xl font-bold" style={{ color: c.color, letterSpacing: "-0.02em" }}>{c.value}</div>
+                <div className="text-xl md:text-2xl font-bold" style={{ color: c.color, letterSpacing: "-0.02em" }}>{c.value}</div>
               </motion.div>
             ))
         }
@@ -124,7 +124,7 @@ export default function DashPayouts() {
             ? <p className="text-sm text-center py-8" style={{ color: "#4a5568" }}>No payouts yet.</p>
             : (
               <div className="overflow-x-auto">
-                <table className="w-full text-sm">
+                <table className="w-full text-sm" style={{ minWidth: 480 }}>
                   <thead>
                     <tr style={{ borderBottom: "1px solid rgba(37,45,61,0.4)" }}>
                       {["Date","Account","Amount","Method","Status"].map(h => (

@@ -139,10 +139,10 @@ export default function OrderPanel({
         <label className="block text-xs mb-1.5 font-medium uppercase tracking-widest" style={{ color:"#6b7a8d" }}>
           Leverage
         </label>
-        <div className="flex gap-1.5 flex-wrap">
+        <div className="flex gap-1.5 overflow-x-auto pb-1" style={{ scrollbarWidth:"none" }}>
           {LEVERAGES.map(lev => (
             <button key={lev} onClick={() => setLev(lev)}
-              className="text-xs px-2.5 py-1.5 rounded font-bold transition-all"
+              className="text-xs px-2.5 py-1.5 rounded font-bold transition-all shrink-0"
               style={{
                 background: leverage===lev ? "rgba(16,212,142,0.15)" : "rgba(37,45,61,0.3)",
                 color:      leverage===lev ? "#10d48e"               : "#6b7a8d",
@@ -155,7 +155,7 @@ export default function OrderPanel({
       </div>
 
       {/* Margin metrics row */}
-      <div className="flex gap-2">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
         <MetricPill
           label="Notional"
           value={`$${notional.toLocaleString("en-US",{maximumFractionDigits:2})}`}

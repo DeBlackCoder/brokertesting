@@ -19,8 +19,8 @@ interface Profile {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <motion.div initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }}
-      className="p-6" style={{ background:"rgba(14,17,24,0.8)", border:"1px solid rgba(37,45,61,0.45)", borderRadius:8 }}>
-      <h2 className="text-sm font-bold mb-5" style={{ color:"#f0ede8" }}>{title}</h2>
+      className="p-4 md:p-6" style={{ background:"rgba(14,17,24,0.8)", border:"1px solid rgba(37,45,61,0.45)", borderRadius:8 }}>
+      <h2 className="text-sm font-bold mb-4 md:mb-5" style={{ color:"#f0ede8" }}>{title}</h2>
       {children}
     </motion.div>
   );

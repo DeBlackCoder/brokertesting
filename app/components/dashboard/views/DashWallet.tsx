@@ -114,7 +114,7 @@ export default function DashWallet() {
                 <div className="w-8 h-8 rounded-lg flex items-center justify-center text-sm"
                   style={{ background:"rgba(16,212,142,0.1)", color:"#10d48e" }}>$</div>
               </div>
-              <div className="text-3xl font-bold tabular-nums mb-2" style={{ color:"#10d48e", letterSpacing:"-0.03em" }}>
+              <div className="text-2xl md:text-3xl font-bold tabular-nums mb-2" style={{ color:"#10d48e", letterSpacing:"-0.03em" }}>
                 ${(data?.liveBalance ?? 0).toLocaleString("en-US", { minimumFractionDigits:2 })}
               </div>
               <div className="text-xs mb-4" style={{ color:"#4a5568" }}>Available for live trading</div>
@@ -135,7 +135,7 @@ export default function DashWallet() {
                 <div className="w-8 h-8 rounded-lg flex items-center justify-center text-sm"
                   style={{ background:"rgba(0,188,212,0.1)", color:"#00bcd4" }}>◎</div>
               </div>
-              <div className="text-3xl font-bold tabular-nums mb-2" style={{ color:"#00bcd4", letterSpacing:"-0.03em" }}>
+              <div className="text-2xl md:text-3xl font-bold tabular-nums mb-2" style={{ color:"#00bcd4", letterSpacing:"-0.03em" }}>
                 ${(data?.demoBalance ?? 0).toLocaleString("en-US", { minimumFractionDigits:2 })}
               </div>
               <div className="text-xs mb-4" style={{ color:"#4a5568" }}>Paper trading funds — add anytime</div>
@@ -225,7 +225,7 @@ export default function DashWallet() {
           <p className="text-sm text-center py-8" style={{ color:"#4a5568" }}>No transactions yet.</p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full">
+            <table className="w-full" style={{ minWidth: 480 }}>
               <thead>
                 <tr style={{ borderBottom:"1px solid rgba(37,45,61,0.4)" }}>
                   {["Date","Type","Amount","Note","Status"].map(h => (

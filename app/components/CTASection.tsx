@@ -11,7 +11,7 @@ export default function CTASection() {
   return (
     <section
       ref={ref}
-      className="relative py-48 px-6 overflow-hidden"
+      className="relative py-20 md:py-48 px-5 md:px-6 overflow-hidden"
       style={{ background: "#040507" }}
     >
       {/* Orb shader */}
@@ -65,7 +65,7 @@ export default function CTASection() {
             transition={{ delay: 0.1, duration: 1, ease: [0.16, 1, 0.3, 1] }}
             className="font-bold leading-none"
             style={{
-              fontSize: "clamp(3rem, 8vw, 9rem)",
+              fontSize: "clamp(2.5rem, 7vw, 9rem)",
               letterSpacing: "-0.04em",
               color: "#f0ede8",
             }}
@@ -80,7 +80,7 @@ export default function CTASection() {
             transition={{ delay: 0.2, duration: 1, ease: [0.16, 1, 0.3, 1] }}
             className="font-bold leading-none text-gradient-emerald"
             style={{
-              fontSize: "clamp(3rem, 8vw, 9rem)",
+              fontSize: "clamp(2.5rem, 7vw, 9rem)",
               letterSpacing: "-0.04em",
             }}
           >
@@ -105,7 +105,7 @@ export default function CTASection() {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.65, duration: 0.8 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+          className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4"
         >
           <CTAPrimary label="Apply for Access" href="/auth/open-account" />
           <CTASecondary label="Schedule a Consultation" href="/company/about" />
@@ -132,7 +132,7 @@ function CTAPrimary({ label, href = "#" }: { label: string; href?: string }) {
       href={href}
       whileHover={{ scale: 1.04 }}
       whileTap={{ scale: 0.97 }}
-      className="relative overflow-hidden px-12 py-5 font-bold text-sm tracking-widest uppercase inline-block"
+      className="relative overflow-hidden w-full sm:w-auto px-8 md:px-12 py-4 md:py-5 font-bold text-sm tracking-widest uppercase inline-block text-center"
       style={{
         background: "linear-gradient(135deg, #10d48e 0%, #00bcd4 100%)",
         color: "#040507",
@@ -159,7 +159,7 @@ function CTASecondary({ label, href = "#" }: { label: string; href?: string }) {
       href={href}
       whileHover={{ borderColor: "rgba(201,168,76,0.6)", color: "#c9a84c" }}
       whileTap={{ scale: 0.97 }}
-      className="px-12 py-5 font-medium text-sm tracking-widest uppercase inline-block"
+      className="w-full sm:w-auto px-8 md:px-12 py-4 md:py-5 font-medium text-sm tracking-widest uppercase inline-block text-center"
       style={{
         border: "1px solid rgba(74,85,104,0.4)",
         color: "#9fa8b4",

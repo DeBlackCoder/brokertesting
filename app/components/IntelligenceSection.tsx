@@ -75,7 +75,7 @@ function ThroughputCounter() {
   }, [inView]);
 
   return (
-    <div ref={ref} className="text-4xl font-bold tabular-nums" style={{ color: "#f0ede8", letterSpacing: "-0.03em" }}>
+    <div ref={ref} className="text-2xl md:text-4xl font-bold tabular-nums" style={{ color: "#f0ede8", letterSpacing: "-0.03em" }}>
       {display.toLocaleString()}
     </div>
   );
@@ -89,7 +89,7 @@ export default function IntelligenceSection() {
     <section
       id="intelligence"
       ref={ref}
-      className="relative py-40 px-6"
+      className="relative py-16 md:py-40 px-4 md:px-6"
       style={{ background: "linear-gradient(180deg, #080a0f 0%, #0e1118 100%)" }}
     >
       {/* Real candlestick chart photograph — Austin Hervias / Unsplash (free) */}
@@ -119,7 +119,7 @@ export default function IntelligenceSection() {
       </div>
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 mb-10 lg:mb-20">
           <div>
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -137,7 +137,7 @@ export default function IntelligenceSection() {
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="font-bold leading-none"
-              style={{ fontSize: "clamp(2rem, 4.5vw, 5rem)", letterSpacing: "-0.03em", color: "#f0ede8" }}
+              style={{ fontSize: "clamp(1.6rem, 4vw, 5rem)", letterSpacing: "-0.03em", color: "#f0ede8" }}
             >
               Know before
               <br />
@@ -177,10 +177,10 @@ export default function IntelligenceSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.2, duration: 0.7 }}
-            className="p-8"
+            className="p-5 md:p-8"
             style={{ border: "1px solid rgba(37,45,61,0.5)", background: "rgba(14,17,24,0.8)", borderRadius: "4px" }}
           >
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-4 md:mb-6">
               <h3 className="text-sm font-bold tracking-widest uppercase" style={{ color: "#9fa8b4" }}>
                 Market Intelligence Feed
               </h3>
@@ -246,10 +246,10 @@ export default function IntelligenceSection() {
           >
             {/* Signals card */}
             <div
-              className="p-8 flex-1"
+              className="p-5 md:p-8 flex-1"
               style={{ border: "1px solid rgba(37,45,61,0.5)", background: "rgba(14,17,24,0.8)", borderRadius: "4px" }}
             >
-              <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center justify-between mb-4 md:mb-6">
                 <h3 className="text-sm font-bold tracking-widest uppercase" style={{ color: "#9fa8b4" }}>
                   AI Trade Signals
                 </h3>

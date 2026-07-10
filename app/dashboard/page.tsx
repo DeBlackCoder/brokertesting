@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function DashboardPage() {
   return (
-    <div className="dashboard-page">
+    <div className="dashboard-page" style={{ height:"100dvh", overflow:"hidden" }}>
       <DashboardLayout />
     </div>
   );

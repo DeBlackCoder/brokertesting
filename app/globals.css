@@ -131,8 +131,31 @@ html {
   text-size-adjust: 100%;
 }
 
-/* Touch targets: minimum 44×44px for interactive elements */
+/* ── Global mobile font & layout resets ─────────────────── */
+
+/* Scale down base font size on small screens */
+@media (max-width: 480px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+/* Remove the global min-height touch target — it breaks layouts.
+   Only apply to explicit interactive roles. */
 button, a, [role="button"] {
+  min-height: unset;
+  min-width: unset;
+  display: revert;
+}
+
+/* Targeted touch targets for icon-only buttons */
+.icon-btn {
   min-height: 44px;
   min-width: 44px;
   display: inline-flex;
@@ -140,11 +163,20 @@ button, a, [role="button"] {
   justify-content: center;
 }
 
-/* Override for elements that should be smaller */
-.touch-auto {
-  min-height: unset;
-  min-width: unset;
-  display: unset;
+/* Marketing page sections — reduce vertical padding on mobile */
+@media (max-width: 767px) {
+  .section-py {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+}
+
+/* Dashboard scroll fix — allow the main column to scroll */
+.dash-scroll-fix {
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1;
 }
 
 /* Safe area insets for notched phones */
@@ -217,4 +249,26 @@ table button,
 /* Ticker bar height offset for marketing pages */
 :root {
   --ticker-h: 40px;
+}
+
+/* ── Prevent iOS input zoom (requires font-size >= 16px on focus) ── */
+@media (max-width: 767px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* ── Marketing page container max-width on small screens ── */
+@media (max-width: 767px) {
+  .max-w-7xl {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* ── Reduce h-screen on short mobile viewports ── */
+@media (max-width: 767px) and (max-height: 700px) {
+  .dash-main {
+    padding-bottom: calc(56px + 4px);
+  }
 }

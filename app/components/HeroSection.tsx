@@ -68,7 +68,7 @@ export default function HeroSection() {
 
       {/* Main content */}
       <motion.div
-        className="relative flex flex-col items-center justify-center flex-1 px-6 pt-32 pb-16"
+        className="relative flex flex-col items-center justify-center flex-1 px-5 pt-24 pb-12 md:pt-32 md:pb-16"
         style={{ y: yText, opacity, zIndex: 10 }}
       >
         {/* Pre-headline pill */}
@@ -101,7 +101,7 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 1, ease: [0.16, 1, 0.3, 1] }}
             className="leading-none font-bold"
-            style={{ fontSize: "clamp(3.5rem, 11vw, 12rem)", letterSpacing: "-0.03em", color: "#f0ede8" }}
+            style={{ fontSize: "clamp(2rem, 9vw, 12rem)", letterSpacing: "-0.03em", color: "#f0ede8" }}
           >
             THE FUTURE
           </motion.h1>
@@ -110,7 +110,7 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.65, duration: 1, ease: [0.16, 1, 0.3, 1] }}
             className="leading-none font-bold text-gradient-emerald"
-            style={{ fontSize: "clamp(3.5rem, 11vw, 12rem)", letterSpacing: "-0.03em" }}
+            style={{ fontSize: "clamp(2rem, 9vw, 12rem)", letterSpacing: "-0.03em" }}
           >
             OF WEALTH
           </motion.h1>
@@ -121,8 +121,8 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.85, duration: 0.8 }}
-          className="text-center max-w-lg mb-12"
-          style={{ color: "#9fa8b4", fontSize: "1.05rem", lineHeight: 1.75 }}
+          className="text-center max-w-lg mb-8 md:mb-12 px-2"
+          style={{ color: "#9fa8b4", fontSize: "clamp(0.85rem, 2.5vw, 1.05rem)", lineHeight: 1.75 }}
         >
           Precision-engineered for institutions, hedge funds, and the world&apos;s most
           discerning investors. Trade at the speed of conviction.
@@ -133,7 +133,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1, duration: 0.8 }}
-          className="flex flex-col sm:flex-row items-center gap-4 mb-16"
+          className="flex flex-col sm:flex-row items-center gap-3 mb-10 md:mb-16"
         >
           <PrimaryButton label="Open Account" href="/auth/open-account" />
           <SecondaryButton label="Explore Platform" href="/platform" />

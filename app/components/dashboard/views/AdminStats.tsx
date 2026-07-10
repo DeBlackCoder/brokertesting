@@ -47,7 +47,7 @@ export default function AdminStats() {
               className="p-4 relative overflow-hidden"
               style={{ background: "rgba(14,17,24,0.8)", border: "1px solid rgba(37,45,61,0.45)", borderRadius: 8 }}>
               <div className="text-xs mb-1.5" style={{ color: "#4a5568" }}>{c.label}</div>
-              <div className="text-2xl font-bold tabular-nums mb-1" style={{ color: c.color, letterSpacing: "-0.02em" }}>{c.value}</div>
+              <div className="text-xl md:text-2xl font-bold tabular-nums mb-1" style={{ color: c.color, letterSpacing: "-0.02em" }}>{c.value}</div>
               <div className="text-xs" style={{ color: "#4a5568" }}>{c.sub}</div>
               <div className="absolute bottom-0 left-0 right-0 h-0.5" style={{ background: `linear-gradient(90deg,${c.color},transparent)` }}/>
             </motion.div>

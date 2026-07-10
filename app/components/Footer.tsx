@@ -36,14 +36,14 @@ const LINKS: Record<string, Record<string, string>> = {
 export default function Footer() {
   return (
     <footer
-      className="relative px-6 pt-20 pb-12 overflow-hidden"
+      className="relative px-4 md:px-6 pt-12 md:pt-20 pb-8 md:pb-12 overflow-hidden"
       style={{ background: "#040507", borderTop: "1px solid rgba(37,45,61,0.4)" }}
     >
       <div className="max-w-7xl mx-auto">
         {/* Top row */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-10 mb-16">
-          {/* Brand — full row on mobile, 2 cols on md */}
-          <div className="sm:col-span-2">
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-6 md:gap-10 mb-10 md:mb-16">
+          {/* Brand — full width on mobile */}
+          <div className="col-span-2 md:col-span-2">
             <a href="/" className="flex items-center gap-3 mb-6 w-fit">
               <div className="relative w-7 h-7 shrink-0">
                 <div
@@ -102,7 +102,7 @@ export default function Footer() {
                   <li key={label}>
                     <motion.a
                       href={href}
-                      className="text-sm"
+                      className="text-xs md:text-sm"
                       style={{ color: "#6b7a8d", display: "inline-block", transition: "color 0.2s" }}
                       whileHover={{ color: "#9fa8b4", x: 2 }}
                     >

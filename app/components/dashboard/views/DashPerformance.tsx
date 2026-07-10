@@ -109,7 +109,7 @@ export default function DashPerformance() {
           <motion.div key={c.label} initial={{opacity:0,y:16}} animate={{opacity:1,y:0}} transition={{delay:i*0.07}}
             className="p-4 relative overflow-hidden"
             style={{background:"rgba(14,17,24,0.8)",border:"1px solid rgba(37,45,61,0.45)",borderRadius:8}}>
-            <div className="text-2xl font-bold mb-1" style={{color:"#f0ede8",letterSpacing:"-0.02em"}}>{c.value}</div>
+            <div className="text-xl md:text-2xl font-bold mb-1" style={{color:"#f0ede8",letterSpacing:"-0.02em"}}>{c.value}</div>
             <div className="flex justify-between items-center">
               <span className="text-xs" style={{color:"#4a5568"}}>{c.label}</span>
               <span className="text-xs px-1.5 py-0.5 rounded font-semibold" style={{background:"rgba(16,212,142,0.12)",color:"#10d48e"}}>{c.badge}</span>
@@ -143,7 +143,7 @@ export default function DashPerformance() {
         {loading
           ? <div className="h-12 animate-pulse rounded" style={{background:"rgba(37,45,61,0.3)"}}/>
           : (
-            <div className="grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-9 gap-4">
+            <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-9 gap-4">
               {[
                 {l:"Average Win",    v:`$${(st?.avgWin??0).toFixed(2)}`,    c:"#10d48e"},
                 {l:"Average Loss",   v:`$${(st?.avgLoss??0).toFixed(2)}`,   c:"#ef4444"},

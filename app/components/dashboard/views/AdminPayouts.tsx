@@ -176,7 +176,7 @@ function PayoutsTab() {
         ) : !data?.payouts.length ? (
           <div className="p-8 text-center text-xs" style={{ color:"#4a5568" }}>No payouts found.</div>
         ) : (
-          <table className="w-full">
+          <table className="w-full" style={{ minWidth: 560 }}>
             <thead>
               <tr style={{ borderBottom:"1px solid rgba(37,45,61,0.4)" }}>
                 {["User","Amount","Method","Status","Requested",""].map(h => (

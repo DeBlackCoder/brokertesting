@@ -28,7 +28,7 @@ export default function ManifestoSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-40 px-6 overflow-hidden"
+      className="relative py-16 md:py-40 px-5 md:px-6 overflow-hidden"
       style={{ background: "#080a0f" }}
     >
       {/* Left accent line */}
@@ -61,10 +61,10 @@ export default function ManifestoSection() {
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Big statement */}
-        <div className="mb-28 text-center">
+        <div className="mb-10 md:mb-28 text-center">
           <div
             className="inline-block font-bold leading-none text-center"
-            style={{ fontSize: "clamp(2.5rem, 7vw, 8rem)", letterSpacing: "-0.04em" }}
+            style={{ fontSize: "clamp(1.75rem, 6vw, 8rem)", letterSpacing: "-0.04em" }}
           >
             <span className="block overflow-hidden">
               <motion.span
@@ -108,7 +108,7 @@ export default function ManifestoSection() {
               initial={{ opacity: 0, y: 40 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.4 + i * 0.15, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="group relative p-10"
+              className="group relative p-5 md:p-10"
               style={{
                 borderLeft: i === 0 ? "none" : "1px solid rgba(37,45,61,0.5)",
               }}
@@ -128,7 +128,7 @@ export default function ManifestoSection() {
 
               {/* Title */}
               <h3
-                className="text-2xl font-bold mb-5 leading-tight"
+                className="text-xl md:text-2xl font-bold mb-3 md:mb-5 leading-tight"
                 style={{ color: "#f0ede8", letterSpacing: "-0.02em" }}
               >
                 {item.title}

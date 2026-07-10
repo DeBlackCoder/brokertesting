@@ -156,7 +156,7 @@ export default function PlatformSection() {
     <section
       id="platform"
       ref={ref}
-      className="relative py-40 px-6 overflow-hidden"
+      className="relative py-16 md:py-40 px-4 md:px-6 overflow-hidden"
       style={{ background: "#080a0f" }}
     >
       {/* 3D render background — black & green wavy Blender render */}
@@ -178,7 +178,7 @@ export default function PlatformSection() {
         />
       </div>
       <div className="max-w-7xl mx-auto">
-        <div className="mb-20">
+        <div className="mb-10 md:mb-20">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
@@ -195,7 +195,7 @@ export default function PlatformSection() {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="font-bold leading-none"
-            style={{ fontSize: "clamp(2.5rem, 5vw, 5.5rem)", letterSpacing: "-0.03em", color: "#f0ede8" }}
+            style={{ fontSize: "clamp(1.75rem, 4.5vw, 5.5rem)", letterSpacing: "-0.03em", color: "#f0ede8" }}
           >
             Engineered for
             <br />
@@ -212,7 +212,7 @@ export default function PlatformSection() {
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.2 + i * 0.12, duration: 0.8 }}
               onClick={() => setActive(i)}
-              className="relative cursor-pointer p-8 group"
+              className="relative cursor-pointer p-5 md:p-8 group"
               style={{
                 borderRight: i < 2 ? "1px solid rgba(37,45,61,0.4)" : "none",
                 borderBottom: "1px solid rgba(37,45,61,0.4)",
@@ -252,7 +252,7 @@ export default function PlatformSection() {
 
               <div className="mb-4">
                 <div
-                  className="text-4xl font-bold tabular-nums"
+                  className="text-2xl md:text-4xl font-bold tabular-nums"
                   style={{ color: f.accent, letterSpacing: "-0.03em" }}
                 >
                   {f.metric}

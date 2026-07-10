@@ -282,10 +282,10 @@ export default function DashboardLayout() {
   );
 
   return (
-    <div className="flex min-h-screen" style={{ background: "#0a0c11", fontFamily: "var(--font-editorial, system-ui)" }}>
+    <div className="flex h-screen overflow-hidden" style={{ background: "#0a0c11", fontFamily: "var(--font-editorial, system-ui)" }}>
 
-      {/* Desktop sidebar — hidden on mobile */}
-      <aside className="hidden md:flex flex-col shrink-0"
+      {/* Desktop sidebar — hidden on mobile, scrolls internally */}
+      <aside className="hidden md:flex flex-col shrink-0 overflow-y-auto"
         style={{ width: 210, background: "#0d0f14", borderRight: "1px solid rgba(37,45,61,0.35)" }}>
         <Sidebar/>
       </aside>
@@ -400,6 +400,7 @@ export default function DashboardLayout() {
               }}
               style={{
                 flex:       1,
+                position:   "relative",
                 display:    "flex",
                 flexDirection: "column",
                 alignItems: "center",
