@@ -1,26 +1,220 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-editorial);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --background: #080a0f;
+  --foreground: #f0ede8;
+
+  /* AUREX Color System */
+  --aurex-void: #040507;
+  --aurex-obsidian: #080a0f;
+  --aurex-graphite: #0e1118;
+  --aurex-slate: #141820;
+  --aurex-mist: #1c2230;
+  --aurex-steel: #252d3d;
+
+  --aurex-platinum: #c8c4bc;
+  --aurex-silver: #9fa8b4;
+  /* raised from #4a5568 to pass WCAG AA (4.5:1) on #080a0f */
+  --aurex-ghost: #6b7a8d;
+
+  --aurex-emerald: #10d48e;
+  --aurex-emerald-dim: #0a9965;
+  --aurex-emerald-glow: rgba(16, 212, 142, 0.12);
+  --aurex-emerald-pulse: rgba(16, 212, 142, 0.06);
+
+  --aurex-gold: #c9a84c;
+  --aurex-gold-dim: #9e7e35;
+  --aurex-gold-glow: rgba(201, 168, 76, 0.1);
+
+  --aurex-teal: #00bcd4;
+  --aurex-teal-glow: rgba(0, 188, 212, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--aurex-obsidian);
 }
 
 body {
-  background: var(--background);
+  background: var(--aurex-obsidian);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans, system-ui), sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Fix section anchor scroll — compensates for fixed 80px navbar */
+section[id] {
+  scroll-margin-top: 80px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 3px;
+}
+::-webkit-scrollbar-track {
+  background: var(--aurex-obsidian);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--aurex-ghost);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--aurex-emerald-dim);
+}
+
+/* Selection */
+::selection {
+  background: var(--aurex-emerald-glow);
+  color: var(--aurex-emerald);
+}
+
+/* Text gradients */
+.text-gradient-gold {
+  background: linear-gradient(135deg, #c9a84c 0%, #f5e0a0 40%, #c9a84c 70%, #9e7e35 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-emerald {
+  background: linear-gradient(135deg, #10d48e 0%, #00f5b0 50%, #10d48e 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-platinum {
+  background: linear-gradient(135deg, #9fa8b4 0%, #c8c4bc 30%, #ffffff 50%, #c8c4bc 70%, #9fa8b4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Ambient glow effects */
+.glow-emerald {
+  box-shadow: 0 0 40px var(--aurex-emerald-glow), 0 0 80px var(--aurex-emerald-pulse);
+}
+
+.glow-gold {
+  box-shadow: 0 0 40px var(--aurex-gold-glow);
+}
+
+/* Noise texture overlay */
+.noise::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+}
+
+/* ── Mobile improvements ─────────────────────────────────── */
+
+/* Prevent iOS font size inflation */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Touch targets: minimum 44×44px for interactive elements */
+button, a, [role="button"] {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Override for elements that should be smaller */
+.touch-auto {
+  min-height: unset;
+  min-width: unset;
+  display: unset;
+}
+
+/* Safe area insets for notched phones */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+}
+.safe-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* Bottom nav bar height token */
+:root {
+  --bottom-nav-h: 60px;
+}
+
+/* Dashboard main content — leave room for bottom nav on mobile */
+.dash-main {
+  padding-bottom: calc(var(--bottom-nav-h) + env(safe-area-inset-bottom, 8px) + 8px);
+}
+
+@media (min-width: 768px) {
+  .dash-main {
+    padding-bottom: 32px;
+  }
+}
+
+/* Smooth momentum scrolling on iOS */
+.scroll-smooth-ios {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* Tap highlight removal */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent horizontal overflow on small screens */
+.dash-content {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Number counter */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* Inline tiny buttons (table cells, chips) need unset touch target */
+table button,
+.chip-btn {
+  min-height: unset;
+  min-width: unset;
+}
+
+/* On the dashboard page, hide the ticker bar on mobile
+   (bottom nav takes that space instead) */
+.dashboard-page .hidden-on-dash-mobile {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .dashboard-page .hidden-on-dash-mobile {
+    display: block;
+  }
+}
+
+/* Ticker bar height offset for marketing pages */
+:root {
+  --ticker-h: 40px;
 }
