@@ -36,7 +36,7 @@ const LINKS: Record<string, Record<string, string>> = {
 export default function Footer() {
   return (
     <footer
-      className="relative px-4 md:px-6 pt-12 md:pt-20 pb-20 md:pb-16 overflow-hidden"
+      className="relative px-4 md:px-6 pt-12 md:pt-20 pb-28 md:pb-20 overflow-hidden"
       style={{ background: "#040507", borderTop: "1px solid rgba(37,45,61,0.4)" }}
     >
       <div className="max-w-7xl mx-auto">
