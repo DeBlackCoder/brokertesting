@@ -31,6 +31,11 @@ const TX_SIGN: Record<string, string> = {
   debit: "-", withdrawal: "-",
 };
 
+const STATUS_STYLE = (status: string) => ({
+  background: status === "confirmed" ? "rgba(16,212,142,0.1)" : status === "pending" ? "rgba(201,168,76,0.1)" : "rgba(239,68,68,0.1)",
+  color:      status === "confirmed" ? "#10d48e"              : status === "pending" ? "#c9a84c"              : "#ef4444",
+});
+
 export default function DashWallet() {
   const { data, loading, error, refetch } = useApi<WalletData>("/api/wallet");
 
@@ -88,9 +93,12 @@ export default function DashWallet() {
 
   if (error) return <ErrorState message={error} onRetry={refetch}/>;
 
+  // 16px base font-size is deliberate, not decorative: iOS Safari auto-zooms
+  // the whole page when a focused input's font-size is under 16px. The old
+  // 0.82rem (~13px) triggered that on every phone. Fixed at 16px here.
   const inp: React.CSSProperties = {
     background:"rgba(37,45,61,0.3)", border:"1px solid rgba(37,45,61,0.5)",
-    borderRadius:4, color:"#f0ede8", padding:"9px 12px", fontSize:"0.82rem",
+    borderRadius:4, color:"#f0ede8", padding:"11px 12px", fontSize:16,
     outline:"none", width:"100%",
   };
 
@@ -114,12 +122,12 @@ export default function DashWallet() {
                 <div className="w-7 h-7 rounded-lg flex items-center justify-center text-sm"
                   style={{ background:"rgba(16,212,142,0.1)", color:"#10d48e" }}>$</div>
               </div>
-              <div className="text-xl md:text-3xl font-bold tabular-nums mb-1" style={{ color:"#10d48e", letterSpacing:"-0.03em" }}>
+              <div className="text-2xl md:text-3xl font-bold tabular-nums mb-1" style={{ color:"#10d48e", letterSpacing:"-0.03em" }}>
                 ${(data?.liveBalance ?? 0).toLocaleString("en-US", { minimumFractionDigits:2 })}
               </div>
               <div className="text-xs mb-3" style={{ color:"#4a5568" }}>Available for live trading</div>
               <button onClick={() => setShowDeposit(true)}
-                className="text-xs px-3 py-1.5 rounded font-semibold"
+                className="text-xs px-4 py-2.5 sm:py-1.5 rounded font-semibold w-full sm:w-auto"
                 style={{ background:"rgba(16,212,142,0.1)", border:"1px solid rgba(16,212,142,0.3)", color:"#10d48e" }}>
                 + Deposit Funds
               </button>
@@ -135,18 +143,23 @@ export default function DashWallet() {
                 <div className="w-7 h-7 rounded-lg flex items-center justify-center text-sm"
                   style={{ background:"rgba(0,188,212,0.1)", color:"#00bcd4" }}>◎</div>
               </div>
-              <div className="text-xl md:text-3xl font-bold tabular-nums mb-1" style={{ color:"#00bcd4", letterSpacing:"-0.03em" }}>
+              <div className="text-2xl md:text-3xl font-bold tabular-nums mb-1" style={{ color:"#00bcd4", letterSpacing:"-0.03em" }}>
                 ${(data?.demoBalance ?? 0).toLocaleString("en-US", { minimumFractionDigits:2 })}
               </div>
               <div className="text-xs mb-3" style={{ color:"#4a5568" }}>Paper trading funds — add anytime</div>
               <div className="flex gap-2">
-                <input type="number" placeholder="Amount" value={topupAmt} onChange={e => setTopupAmt(e.target.value)}
-                  className="flex-1 text-sm outline-none"
-                  style={{ ...inp, width:"auto" }}
+                <input
+                  type="number"
+                  inputMode="decimal"
+                  placeholder="Amount"
+                  value={topupAmt}
+                  onChange={e => setTopupAmt(e.target.value)}
+                  className="flex-1 min-w-0 outline-none"
+                  style={inp}
                   onFocus={e => (e.currentTarget.style.borderColor="rgba(0,188,212,0.5)")}
                   onBlur={e  => (e.currentTarget.style.borderColor="rgba(37,45,61,0.5)")}/>
                 <button onClick={handleTopup} disabled={topupLoading}
-                  className="px-4 py-2 text-xs font-semibold rounded shrink-0"
+                  className="px-4 py-2.5 text-xs font-semibold rounded shrink-0"
                   style={{ background:"rgba(0,188,212,0.12)", color:"#00bcd4", border:"1px solid rgba(0,188,212,0.25)" }}>
                   {topupLoading ? "…" : "+ Add"}
                 </button>
@@ -170,14 +183,14 @@ export default function DashWallet() {
           <h2 className="text-sm font-bold" style={{ color:"#f0ede8" }}>Deposit Address</h2>
           {data?.depositAddress && (
             <button onClick={() => setShowDeposit(true)}
-              className="text-xs px-3 py-1.5 rounded font-semibold"
+              className="text-xs px-4 py-2.5 sm:py-1.5 rounded font-semibold w-full sm:w-auto"
               style={{ background:"rgba(16,212,142,0.1)", border:"1px solid rgba(16,212,142,0.3)", color:"#10d48e" }}>
               I've Sent Funds →
             </button>
           )}
         </div>
         <p className="text-xs mb-3" style={{ color:"#4a5568" }}>
-          Send crypto to the address below, then click <strong style={{ color:"#f0ede8" }}>I've Sent Funds</strong> to notify our team.
+          Send crypto to the address below, then tap <strong style={{ color:"#f0ede8" }}>I've Sent Funds</strong> to notify our team.
         </p>
         {loading ? (
           <div className="h-10 animate-pulse rounded" style={{ background:"rgba(37,45,61,0.3)" }}/>
@@ -188,17 +201,20 @@ export default function DashWallet() {
           </div>
         ) : (
           <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <div className="flex-1 min-w-0 px-3 py-2.5 rounded font-mono text-xs break-all"
+            <button
+              onClick={copyAddress}
+              className="w-full flex items-center gap-2 text-left"
+              aria-label="Tap to copy deposit address"
+            >
+              <div className="flex-1 min-w-0 px-3 py-3 rounded font-mono text-xs break-all"
                 style={{ background:"rgba(37,45,61,0.3)", color:"#10d48e", border:"1px solid rgba(37,45,61,0.5)", wordBreak:"break-all" }}>
                 {data.depositAddress}
               </div>
-              <button onClick={copyAddress}
-                className="shrink-0 px-3 py-2.5 text-xs font-semibold rounded"
+              <div className="shrink-0 w-11 h-11 flex items-center justify-center text-xs font-semibold rounded"
                 style={{ background: copied ? "rgba(16,212,142,0.15)" : "rgba(37,45,61,0.4)", color: copied ? "#10d48e" : "#9fa8b4", border:"1px solid rgba(37,45,61,0.5)" }}>
                 {copied ? "✓" : "Copy"}
-              </button>
-            </div>
+              </div>
+            </button>
             <div className="flex items-start gap-2 px-3 py-2 rounded"
               style={{ background:"rgba(201,168,76,0.06)", border:"1px solid rgba(201,168,76,0.15)" }}>
               <span style={{ color:"#c9a84c", fontSize:11, marginTop:1, flexShrink:0 }}>⚠</span>
@@ -224,51 +240,83 @@ export default function DashWallet() {
         ) : !data?.transactions.length ? (
           <p className="text-sm text-center py-8" style={{ color:"#4a5568" }}>No transactions yet.</p>
         ) : (
-          <div className="overflow-x-auto" style={{ WebkitOverflowScrolling: "touch" }}>
-            <table className="w-full" style={{ minWidth: 0 }}>
-              <thead>
-                <tr style={{ borderBottom:"1px solid rgba(37,45,61,0.4)" }}>
-                  <th className="pb-2 text-left text-xs font-medium pr-3" style={{ color:"#4a5568" }}>Date</th>
-                  <th className="pb-2 text-left text-xs font-medium pr-3" style={{ color:"#4a5568" }}>Type</th>
-                  <th className="pb-2 text-left text-xs font-medium pr-3" style={{ color:"#4a5568" }}>Amount</th>
-                  <th className="pb-2 text-left text-xs font-medium pr-3 hidden sm:table-cell" style={{ color:"#4a5568" }}>Note</th>
-                  <th className="pb-2 text-left text-xs font-medium" style={{ color:"#4a5568" }}>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.transactions.map(t => (
-                  <tr key={t._id} style={{ borderBottom:"1px solid rgba(37,45,61,0.2)" }}>
-                    <td className="py-2 pr-3 text-xs" style={{ color:"#6b7a8d", whiteSpace:"nowrap" }}>
-                      {new Date(t.createdAt).toLocaleDateString("en-US",{month:"short",day:"numeric"})}
-                    </td>
-                    <td className="py-2 pr-3">
-                      <span className="text-xs px-1.5 py-0.5 rounded capitalize"
-                        style={{ background:`${TX_COLOR[t.type] ?? "#6b7a8d"}18`, color: TX_COLOR[t.type] ?? "#6b7a8d", whiteSpace:"nowrap" }}>
-                        {t.type.replace("_"," ")}
-                      </span>
-                    </td>
-                    <td className="py-2 pr-3 font-bold font-mono text-xs whitespace-nowrap"
+          <>
+            {/* Mobile: card list — a horizontally-scrolling table is awkward to
+                read one-handed, so small screens get stacked cards instead. */}
+            <div className="sm:hidden space-y-2">
+              {data.transactions.map(t => (
+                <div key={t._id} className="p-3 rounded-lg"
+                  style={{ background:"rgba(37,45,61,0.15)", border:"1px solid rgba(37,45,61,0.3)" }}>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs px-1.5 py-0.5 rounded capitalize font-semibold"
+                      style={{ background:`${TX_COLOR[t.type] ?? "#6b7a8d"}18`, color: TX_COLOR[t.type] ?? "#6b7a8d" }}>
+                      {t.type.replace("_"," ")}
+                    </span>
+                    <span className="font-bold font-mono text-sm"
                       style={{ color: TX_COLOR[t.type] ?? "#9fa8b4" }}>
                       {TX_SIGN[t.type] ?? "+"}${t.amount.toLocaleString()}
-                    </td>
-                    <td className="py-2 pr-3 text-xs hidden sm:table-cell"
-                      style={{ color:"#6b7a8d", maxWidth:140, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
-                      {t.note ?? "—"}
-                    </td>
-                    <td className="py-2">
-                      <span className="text-xs capitalize font-semibold px-1.5 py-0.5 rounded whitespace-nowrap"
-                        style={{
-                          background: t.status==="confirmed" ? "rgba(16,212,142,0.1)" : t.status==="pending" ? "rgba(201,168,76,0.1)" : "rgba(239,68,68,0.1)",
-                          color:      t.status==="confirmed" ? "#10d48e"              : t.status==="pending" ? "#c9a84c"              : "#ef4444",
-                        }}>
-                        {t.status}
-                      </span>
-                    </td>
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs" style={{ color:"#6b7a8d" }}>
+                      {new Date(t.createdAt).toLocaleDateString("en-US",{month:"short",day:"numeric"})}
+                    </span>
+                    <span className="text-xs capitalize font-semibold px-1.5 py-0.5 rounded" style={STATUS_STYLE(t.status)}>
+                      {t.status}
+                    </span>
+                  </div>
+                  {t.note && (
+                    <p className="text-xs mt-2 pt-2" style={{ color:"#4a5568", borderTop:"1px solid rgba(37,45,61,0.3)" }}>
+                      {t.note}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop / tablet: table */}
+            <div className="hidden sm:block overflow-x-auto" style={{ WebkitOverflowScrolling: "touch" }}>
+              <table className="w-full" style={{ minWidth: 0 }}>
+                <thead>
+                  <tr style={{ borderBottom:"1px solid rgba(37,45,61,0.4)" }}>
+                    <th className="pb-2 text-left text-xs font-medium pr-3" style={{ color:"#4a5568" }}>Date</th>
+                    <th className="pb-2 text-left text-xs font-medium pr-3" style={{ color:"#4a5568" }}>Type</th>
+                    <th className="pb-2 text-left text-xs font-medium pr-3" style={{ color:"#4a5568" }}>Amount</th>
+                    <th className="pb-2 text-left text-xs font-medium pr-3" style={{ color:"#4a5568" }}>Note</th>
+                    <th className="pb-2 text-left text-xs font-medium" style={{ color:"#4a5568" }}>Status</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {data.transactions.map(t => (
+                    <tr key={t._id} style={{ borderBottom:"1px solid rgba(37,45,61,0.2)" }}>
+                      <td className="py-2 pr-3 text-xs" style={{ color:"#6b7a8d", whiteSpace:"nowrap" }}>
+                        {new Date(t.createdAt).toLocaleDateString("en-US",{month:"short",day:"numeric"})}
+                      </td>
+                      <td className="py-2 pr-3">
+                        <span className="text-xs px-1.5 py-0.5 rounded capitalize"
+                          style={{ background:`${TX_COLOR[t.type] ?? "#6b7a8d"}18`, color: TX_COLOR[t.type] ?? "#6b7a8d", whiteSpace:"nowrap" }}>
+                          {t.type.replace("_"," ")}
+                        </span>
+                      </td>
+                      <td className="py-2 pr-3 font-bold font-mono text-xs whitespace-nowrap"
+                        style={{ color: TX_COLOR[t.type] ?? "#9fa8b4" }}>
+                        {TX_SIGN[t.type] ?? "+"}${t.amount.toLocaleString()}
+                      </td>
+                      <td className="py-2 pr-3 text-xs"
+                        style={{ color:"#6b7a8d", maxWidth:140, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
+                        {t.note ?? "—"}
+                      </td>
+                      <td className="py-2">
+                        <span className="text-xs capitalize font-semibold px-1.5 py-0.5 rounded whitespace-nowrap" style={STATUS_STYLE(t.status)}>
+                          {t.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </motion.div>
 
@@ -277,19 +325,43 @@ export default function DashWallet() {
         {showDeposit && (
           <>
             <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
-              className="fixed inset-0 z-50"
-              style={{ background:"rgba(4,5,7,0.88)", backdropFilter:"blur(8px)" }}
+              style={{ position:"fixed", inset:0, zIndex:9998, background:"rgba(4,5,7,0.88)", backdropFilter:"blur(8px)" }}
               onClick={() => { setShowDeposit(false); setDepMsg(null); }}/>
-            <motion.div
-              initial={{ opacity:0, scale:0.95, y:20 }}
-              animate={{ opacity:1, scale:1, y:0 }}
-              exit={{ opacity:0, scale:0.95 }}
-              className="fixed z-50 left-1/2 top-1/2 w-full max-w-md p-7"
-              style={{ transform:"translate(-50%,-50%)", background:"rgba(13,15,20,0.99)", border:"1px solid rgba(37,45,61,0.55)", borderRadius:12 }}>
+
+            {/* Centering shell — never transformed, always viewport-centred.
+                On mobile it anchors to the bottom of the screen instead of true
+                center, which is easier to reach one-handed and avoids the
+                keyboard shoving a vertically-centered modal around. */}
+            <div style={{
+              position:"fixed", inset:0, zIndex:9999,
+              display:"flex", alignItems:"flex-end", justifyContent:"center",
+              padding:0, pointerEvents:"none",
+            }}
+            className="sm:items-center sm:p-4">
+              <motion.div
+                initial={{ opacity:0, y:40 }}
+                animate={{ opacity:1, y:0 }}
+                exit={{ opacity:0, y:40 }}
+                style={{
+                  pointerEvents:"auto",
+                  width:"100%", maxWidth:440,
+                  maxHeight:"90vh", overflowY:"auto",
+                  background:"rgba(13,15,20,0.99)",
+                  border:"1px solid rgba(37,45,61,0.55)",
+                  paddingBottom: "max(20px, env(safe-area-inset-bottom))",
+                  boxShadow:"0 32px 80px rgba(0,0,0,0.7)",
+                }}
+                className="rounded-t-2xl sm:rounded-xl p-5 sm:p-6">
 
               <div className="flex items-center justify-between mb-1">
                 <h2 className="text-lg font-bold" style={{ color:"#f0ede8" }}>Confirm Your Deposit</h2>
-                <button onClick={() => { setShowDeposit(false); setDepMsg(null); }} style={{ color:"#4a5568", fontSize:20, lineHeight:1 }}>×</button>
+                <button
+                  onClick={() => { setShowDeposit(false); setDepMsg(null); }}
+                  aria-label="Close"
+                  className="w-9 h-9 flex items-center justify-center rounded-full -mr-1.5"
+                  style={{ color:"#8a94a3", fontSize:20, lineHeight:1, background:"rgba(37,45,61,0.3)" }}>
+                  ×
+                </button>
               </div>
               <p className="text-xs mb-6" style={{ color:"#6b7a8d" }}>
                 Tell us the amount you sent. Our team will verify and credit your account within 1–24 hours.
@@ -298,14 +370,24 @@ export default function DashWallet() {
               <div className="space-y-4">
                 <div>
                   <label className="block text-xs mb-1.5 font-medium" style={{ color:"#6b7a8d" }}>Amount Sent (USD) *</label>
-                  <input type="number" value={depAmt} onChange={e => setDepAmt(e.target.value)}
+                  <input
+                    type="number"
+                    inputMode="decimal"
+                    value={depAmt}
+                    onChange={e => setDepAmt(e.target.value)}
                     placeholder="e.g. 500" style={inp}
                     onFocus={e => (e.currentTarget.style.borderColor="rgba(16,212,142,0.5)")}
                     onBlur={e  => (e.currentTarget.style.borderColor="rgba(37,45,61,0.5)")}/>
                 </div>
                 <div>
                   <label className="block text-xs mb-1.5 font-medium" style={{ color:"#6b7a8d" }}>Transaction Hash <span style={{ color:"#4a5568" }}>(optional but speeds up verification)</span></label>
-                  <input type="text" value={depHash} onChange={e => setDepHash(e.target.value)}
+                  <input
+                    type="text"
+                    autoCapitalize="off"
+                    autoCorrect="off"
+                    spellCheck={false}
+                    value={depHash}
+                    onChange={e => setDepHash(e.target.value)}
                     placeholder="0x..." style={inp}
                     onFocus={e => (e.currentTarget.style.borderColor="rgba(16,212,142,0.5)")}
                     onBlur={e  => (e.currentTarget.style.borderColor="rgba(37,45,61,0.5)")}/>
@@ -331,17 +413,18 @@ export default function DashWallet() {
 
               <div className="flex gap-3 mt-6">
                 <button onClick={() => { setShowDeposit(false); setDepMsg(null); }}
-                  className="flex-1 py-2.5 text-sm rounded font-semibold"
+                  className="flex-1 py-3 sm:py-2.5 text-sm rounded font-semibold"
                   style={{ border:"1px solid rgba(37,45,61,0.5)", color:"#6b7a8d" }}>
                   Cancel
                 </button>
                 <button onClick={submitDeposit} disabled={depLoading}
-                  className="flex-1 py-2.5 text-sm rounded font-bold"
+                  className="flex-1 py-3 sm:py-2.5 text-sm rounded font-bold"
                   style={{ background: depLoading ? "rgba(37,45,61,0.4)" : "linear-gradient(135deg,#10d48e,#00bcd4)", color: depLoading ? "#6b7a8d" : "#040507" }}>
                   {depLoading ? "Submitting…" : "Submit Deposit"}
                 </button>
               </div>
             </motion.div>
+            </div>{/* end centering shell */}
           </>
         )}
       </AnimatePresence>
