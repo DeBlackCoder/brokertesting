@@ -304,7 +304,7 @@ export default function OpenAccountPageContent() {
             <div className="w-8 h-px" style={{ background: "#10d48e" }} />
             <span className="text-xs tracking-widest uppercase" style={{ color: "#10d48e" }}>Account Application</span>
           </div>
-          <h1 className="text-2xl md:text-4xl font-bold mb-3" style={{ color: "#f0ede8", letterSpacing: "-0.03em" }}>Open your account.</h1>
+          <h1 className="text-2xl md:text-4xl font-bold mb-3" style={{ color: "#f0ede8", letterSpacing: "-0.02em", fontFamily: "var(--font-hero, Cormorant Garamond, Georgia, serif)" }}>Open your account.</h1>
           <p className="text-sm" style={{ color: "#6b7a8d" }}>Applications reviewed within 24 hours.</p>
         </div>
 

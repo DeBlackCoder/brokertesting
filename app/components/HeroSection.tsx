@@ -72,7 +72,7 @@ export default function HeroSection() {
         style={{ y: yText, opacity, zIndex: 10 }}
       >
         {/* Pre-headline pill */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -92,7 +92,7 @@ export default function HeroSection() {
           <span className="text-xs tracking-[0.25em] uppercase font-medium" style={{ color: "#10d48e" }}>
             Elite Investment Platform
           </span>
-        </motion.div>
+        </motion.div> */}
 
         {/* Giant headline */}
         <div className="text-center max-w-6xl mx-auto mb-6">
@@ -104,7 +104,7 @@ export default function HeroSection() {
             style={{ fontSize: "clamp(2rem, 9vw, 12rem)", letterSpacing: "-0.02em", color: "#f0ede8", fontFamily: "var(--font-hero, Cormorant Garamond, Georgia, serif)", fontWeight: 700 }}
           >
             THE FUTURE
-          </motion.h1>
+          </motion.h1>  
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}

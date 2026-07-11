@@ -102,7 +102,7 @@ export default function InstitutionalSection() {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="font-bold leading-none max-w-3xl"
-            style={{ fontSize: "clamp(1.75rem, 4.5vw, 5.5rem)", letterSpacing: "-0.03em", color: "#f0ede8" }}
+            style={{ fontSize: "clamp(1.75rem, 4.5vw, 5.5rem)", letterSpacing: "-0.02em", color: "#f0ede8", fontFamily: "var(--font-hero, Cormorant Garamond, Georgia, serif)" }}
           >
             Trusted by those
             <br />

@@ -64,7 +64,7 @@ export default function ManifestoSection() {
         <div className="mb-10 md:mb-28 text-center">
           <div
             className="inline-block font-bold leading-none text-center"
-            style={{ fontSize: "clamp(1.75rem, 6vw, 8rem)", letterSpacing: "-0.04em" }}
+            style={{ fontSize: "clamp(1.75rem, 6vw, 8rem)", letterSpacing: "-0.02em", fontFamily: "var(--font-hero, Cormorant Garamond, Georgia, serif)" }}
           >
             <span className="block overflow-hidden">
               <motion.span

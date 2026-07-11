@@ -66,8 +66,6 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col noise">
         {children}
-        {/* Spacer so content never sits behind the fixed TickerBar */}
-        <div aria-hidden="true" style={{ height: "80px", flexShrink: 0 }} />
         <TickerBar />
       </body>
     </html>

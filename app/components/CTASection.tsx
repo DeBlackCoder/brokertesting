@@ -66,8 +66,9 @@ export default function CTASection() {
             className="font-bold leading-none"
             style={{
               fontSize: "clamp(2.5rem, 7vw, 9rem)",
-              letterSpacing: "-0.04em",
+              letterSpacing: "-0.02em",
               color: "#f0ede8",
+              fontFamily: "var(--font-hero, Cormorant Garamond, Georgia, serif)",
             }}
           >
             Enter
@@ -81,7 +82,8 @@ export default function CTASection() {
             className="font-bold leading-none text-gradient-emerald"
             style={{
               fontSize: "clamp(2.5rem, 7vw, 9rem)",
-              letterSpacing: "-0.04em",
+              letterSpacing: "-0.02em",
+              fontFamily: "var(--font-hero, Cormorant Garamond, Georgia, serif)",
             }}
           >
             AUREX.

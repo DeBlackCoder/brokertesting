@@ -44,7 +44,12 @@
 html {
   scroll-behavior: smooth;
   background: var(--aurex-obsidian);
+  /* Fixed ticker is ~44px + safe-area. 80px gives comfortable clearance
+     on all devices including iPhone notch/home-bar */
+  padding-bottom: 80px;
+  box-sizing: border-box;
 }
+
 
 body {
   background:              var(--aurex-obsidian);
@@ -228,11 +233,7 @@ table button,
   min-width: unset;
 }
 
-/* Dashboard page uses its own scroll container — body spacer doesn't apply */
-.dashboard-page ~ div[aria-hidden],
-body:has(.dashboard-page) > div[aria-hidden] {
-  display: none;
-}
+/* Dashboard page uses its own scroll container — TickerBar sits outside it */
 
 /* ── Prevent iOS input zoom (requires font-size >= 16px on focus) ── */
 @media (max-width: 767px) {
@@ -252,7 +253,7 @@ body:has(.dashboard-page) > div[aria-hidden] {
 /* ── Reduce h-screen on short mobile viewports ── */
 @media (max-width: 767px) and (max-height: 700px) {
   .dash-main {
-    padding-bottom: calc(56px + 4px);
+    padding-bottom: 80px;
   }
 }
 
