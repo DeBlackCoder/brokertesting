@@ -172,7 +172,7 @@ export default function PriceAlerts({ prices, onToast }: Props) {
                 {/* Current price hint */}
                 {prices[base] && (
                   <div className="text-xs mb-2" style={{ color:"#4a5568" }}>
-                    Current {INSTRUMENTS.find(i=>i.base===base)?.symbol}: <span style={{ color:"#9fa8b4", fontFamily:"monospace" }}>{formatPrice(prices[base])}</span>
+                    Current {INSTRUMENTS.find(i=>i.base===base)?.symbol}: <span style={{ color:"#9fa8b4", fontFamily:"var(--font-mono, JetBrains Mono, monospace)" }}>{formatPrice(prices[base])}</span>
                   </div>
                 )}
 

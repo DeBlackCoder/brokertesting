@@ -35,7 +35,7 @@ export default function LegalPageContent({ title, lastUpdated, sections }: Legal
       </div>
 
       {/* Content */}
-      <div className="px-6 py-16">
+      <div className="px-6 py-16 pb-24">
         <div className="max-w-4xl mx-auto">
           {/* Risk callout */}
           <motion.div

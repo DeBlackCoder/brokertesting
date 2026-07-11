@@ -3,8 +3,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-editorial);
-  --font-mono: var(--font-geist-mono);
+  --font-sans:  var(--font-sans);      /* Inter — body/UI */
+  --font-mono:  var(--font-mono);      /* JetBrains Mono — prices/numbers */
 }
 
 :root {
@@ -47,12 +47,37 @@ html {
 }
 
 body {
-  background: var(--aurex-obsidian);
-  color: var(--foreground);
-  font-family: var(--font-sans, system-ui), sans-serif;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
+  background:              var(--aurex-obsidian);
+  color:                   var(--foreground);
+  font-family:             var(--font-sans, "Inter", system-ui, sans-serif);
+  font-size:               15px;
+  line-height:             1.6;
+  overflow-x:              hidden;
+  -webkit-font-smoothing:  antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Display font for headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display, "Space Grotesk", "Inter", sans-serif);
+  line-height: 1.1;
+}
+
+/* Mono font for prices and numbers */
+.font-mono, code, kbd, samp, pre,
+[style*="fontFamily:\"monospace\""],
+[style*="fontFamily: \"monospace\""],
+[style*="fontFamily:'monospace'"] {
+  font-family: var(--font-mono, "JetBrains Mono", monospace) !important;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Hero/editorial serif — for large display text only */
+.font-hero {
+  font-family: var(--font-hero, "Cormorant Garamond", Georgia, serif);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
 }
 
 /* Fix section anchor scroll — compensates for fixed 80px navbar */
@@ -147,36 +172,10 @@ html {
 }
 
 /* Remove the global min-height touch target — it breaks layouts.
-   Only apply to explicit interactive roles. */
+   Only unset size, never override display. */
 button, a, [role="button"] {
   min-height: unset;
   min-width: unset;
-  display: revert;
-}
-
-/* Targeted touch targets for icon-only buttons */
-.icon-btn {
-  min-height: 44px;
-  min-width: 44px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Marketing page sections — reduce vertical padding on mobile */
-@media (max-width: 767px) {
-  .section-py {
-    padding-top: 64px;
-    padding-bottom: 64px;
-  }
-}
-
-/* Dashboard scroll fix — allow the main column to scroll */
-.dash-scroll-fix {
-  min-height: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-  flex: 1;
 }
 
 /* Safe area insets for notched phones */
@@ -187,19 +186,14 @@ button, a, [role="button"] {
   padding-top: env(safe-area-inset-top, 0px);
 }
 
-/* Bottom nav bar height token */
-:root {
-  --bottom-nav-h: 60px;
-}
-
-/* Dashboard main content — leave room for bottom nav on mobile */
+/* Dashboard main content — clear the fixed ticker bar at the bottom */
 .dash-main {
-  padding-bottom: calc(var(--bottom-nav-h) + env(safe-area-inset-bottom, 8px) + 8px);
+  padding-bottom: 72px;
 }
 
 @media (min-width: 768px) {
   .dash-main {
-    padding-bottom: 32px;
+    padding-bottom: 64px;
   }
 }
 
@@ -234,21 +228,14 @@ table button,
   min-width: unset;
 }
 
-/* On the dashboard page, hide the ticker bar on mobile
-   (bottom nav takes that space instead) */
-.dashboard-page .hidden-on-dash-mobile {
-  display: none;
+/* Ticker bar height — gives all pages bottom clearance so content ends above the ticker */
+body {
+  padding-bottom: 72px;
 }
 
-@media (min-width: 768px) {
-  .dashboard-page .hidden-on-dash-mobile {
-    display: block;
-  }
-}
-
-/* Ticker bar height offset for marketing pages */
-:root {
-  --ticker-h: 40px;
+/* Dashboard page — uses its own dash-main padding instead */
+body:has(.dashboard-page) {
+  padding-bottom: 0;
 }
 
 /* ── Prevent iOS input zoom (requires font-size >= 16px on focus) ── */
@@ -271,4 +258,10 @@ table button,
   .dash-main {
     padding-bottom: calc(56px + 4px);
   }
+}
+
+/* Loading pulse keyframe — used by dashboard loader */
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.3; transform: scale(1.5); }
 }

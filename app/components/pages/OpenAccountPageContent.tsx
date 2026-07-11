@@ -214,7 +214,7 @@ export default function OpenAccountPageContent() {
   // ════════════════════════════════════════════════════════════════════════
   if (screen === "otp") {
     return (
-      <div className="min-h-screen flex items-center justify-center px-6 py-32" style={{ background: "#080a0f" }}>
+      <div className="min-h-screen flex items-center justify-center px-6 py-32 pb-24" style={{ background: "#080a0f" }}>
         <div className="absolute inset-0 pointer-events-none" aria-hidden="true"
           style={{ backgroundImage: `linear-gradient(rgba(37,45,61,0.1) 1px,transparent 1px),linear-gradient(90deg,rgba(37,45,61,0.1) 1px,transparent 1px)`, backgroundSize: "80px 80px" }} />
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
@@ -270,7 +270,7 @@ export default function OpenAccountPageContent() {
   // ════════════════════════════════════════════════════════════════════════
   if (screen === "done") {
     return (
-      <div className="min-h-screen flex items-center justify-center px-6" style={{ background: "#080a0f" }}>
+      <div className="min-h-screen flex items-center justify-center px-6 pb-24" style={{ background: "#080a0f" }}>
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center max-w-sm">
           <motion.div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-8"
             style={{ background: "rgba(16,212,142,0.08)", border: "1px solid rgba(16,212,142,0.3)" }}
@@ -294,7 +294,7 @@ export default function OpenAccountPageContent() {
   // SCREEN: Multi-step form
   // ════════════════════════════════════════════════════════════════════════
   return (
-    <div className="min-h-screen px-6 py-24" style={{ background: "#080a0f" }}>
+    <div className="min-h-screen px-6 py-24 pb-24" style={{ background: "#080a0f" }}>
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true"
         style={{ backgroundImage: `linear-gradient(rgba(37,45,61,0.1) 1px,transparent 1px),linear-gradient(90deg,rgba(37,45,61,0.1) 1px,transparent 1px)`, backgroundSize: "80px 80px" }} />
       <div className="relative z-10 max-w-3xl mx-auto">

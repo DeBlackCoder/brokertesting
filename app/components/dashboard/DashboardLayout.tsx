@@ -135,16 +135,30 @@ const ROLE_BADGE: Record<string, { label: string; color: string; bg: string }> =
 function NavItem({ item, active, onClick }: { item: { id: Tab; label: string; icon: React.ReactNode }; active: boolean; onClick: () => void }) {
   return (
     <button onClick={onClick}
-      className="w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-left relative transition-all"
       style={{
-        color:        active ? "#10d48e" : "#6b7a8d",
-        background:   active ? "rgba(16,212,142,0.07)" : "transparent",
-        borderRadius: "6px",
-        borderLeft:   active ? "2px solid #10d48e" : "2px solid transparent",
+        display:        "flex",
+        alignItems:     "center",
+        gap:            12,
+        width:          "100%",
+        padding:        "10px 12px",
+        fontSize:       "0.8rem",
+        fontWeight:     500,
+        textAlign:      "left",
+        cursor:         "pointer",
+        background:     active ? "rgba(16,212,142,0.07)" : "transparent",
+        color:          active ? "#10d48e" : "#6b7a8d",
+        borderRadius:   6,
+        borderLeft:     active ? "2px solid #10d48e" : "2px solid transparent",
+        border:         "none",
+        borderLeftWidth: 2,
+        borderLeftStyle: "solid",
+        borderLeftColor: active ? "#10d48e" : "transparent",
+        transition:     "background 0.15s, color 0.15s",
+        whiteSpace:     "nowrap",
       }}
     >
-      <span style={{ opacity: active ? 1 : 0.65 }}>{item.icon}</span>
-      {item.label}
+      <span style={{ opacity: active ? 1 : 0.65, flexShrink: 0 }}>{item.icon}</span>
+      <span>{item.label}</span>
     </button>
   );
 }
@@ -170,8 +184,17 @@ export default function DashboardLayout() {
 
   if (!loaded || !user) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0a0c11" }}>
-        <div className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#10d48e" }}/>
+      <div style={{
+        minHeight: "100dvh", display: "flex", alignItems: "center", justifyContent: "center",
+        background: "#0a0c11", flexDirection: "column", gap: 12,
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#10d48e",
+            animation: "pulse 1.2s ease-in-out infinite" }}/>
+          <span style={{ color: "#4a5568", fontSize: "0.75rem", letterSpacing: "0.1em", textTransform: "uppercase" }}>
+            Loading
+          </span>
+        </div>
       </div>
     );
   }
@@ -200,17 +223,20 @@ export default function DashboardLayout() {
     <div className="flex flex-col h-full">
       {/* Logo + home link */}
       <div className="px-5 py-5 mb-1">
-        <a href="/" className="flex items-center gap-2.5 group mb-3">
-          <div className="relative w-6 h-6 shrink-0">
-            <div className="absolute inset-0" style={{ background: "linear-gradient(135deg,#10d48e,#00bcd4)", clipPath: "polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)" }}/>
-            <div className="absolute inset-[1.5px]" style={{ background: "#0d0f14", clipPath: "polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)" }}/>
-            <div className="absolute inset-[3px]" style={{ background: "linear-gradient(135deg,#10d48e,#00bcd4)", clipPath: "polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)", opacity: 0.75 }}/>
+        {/* Full inline styles — avoids global CSS display:revert on <a> */}
+        <a href="/"
+          style={{ display:"flex", alignItems:"center", gap:10, textDecoration:"none", marginBottom:12 }}>
+          <div style={{ position:"relative", width:24, height:24, flexShrink:0 }}>
+            <div style={{ position:"absolute", inset:0,   background:"linear-gradient(135deg,#10d48e,#00bcd4)", clipPath:"polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)" }}/>
+            <div style={{ position:"absolute", inset:1.5, background:"#0d0f14",                                  clipPath:"polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)" }}/>
+            <div style={{ position:"absolute", inset:3,   background:"linear-gradient(135deg,#10d48e,#00bcd4)", clipPath:"polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)", opacity:0.75 }}/>
           </div>
-          <span className="text-sm font-bold tracking-[0.2em] uppercase" style={{ color: "#f0ede8" }}>AUREX</span>
+          <span style={{ color:"#f0ede8", fontSize:"0.8rem", fontWeight:700, letterSpacing:"0.2em", textTransform:"uppercase", lineHeight:1, whiteSpace:"nowrap" }}>
+            AUREX
+          </span>
         </a>
         <a href="/"
-          className="flex items-center gap-1 text-xs"
-          style={{ color:"#4a5568", transition:"color 0.15s" }}
+          style={{ display:"flex", alignItems:"center", gap:4, textDecoration:"none", color:"#4a5568", fontSize:"0.7rem" }}
           onMouseEnter={e => (e.currentTarget.style.color="#6b7a8d")}
           onMouseLeave={e => (e.currentTarget.style.color="#4a5568")}>
           <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
@@ -251,8 +277,8 @@ export default function DashboardLayout() {
 
       <div className="mx-4 mt-3 mb-3 h-px" style={{ background: "rgba(37,45,61,0.4)" }}/>
 
-      {/* User block */}
-      <div className="px-4 pb-5">
+      {/* User block — padded to clear the fixed TickerBar */}
+      <div className="px-4" style={{ paddingBottom: "calc(72px + env(safe-area-inset-bottom, 0px))" }}>
         <div className="flex items-center gap-3 mb-3">
           <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0"
             style={{ background: badge.bg, border: `1px solid ${badge.color}30`, color: badge.color }}>
@@ -282,7 +308,7 @@ export default function DashboardLayout() {
   );
 
   return (
-    <div className="flex h-screen overflow-hidden" style={{ background: "#0a0c11", fontFamily: "var(--font-editorial, system-ui)" }}>
+    <div className="flex h-screen overflow-hidden" style={{ background: "#0a0c11", fontFamily: "var(--font-sans, Inter, system-ui)" }}>
 
       {/* Desktop sidebar — hidden on mobile, scrolls internally */}
       <aside className="hidden md:flex flex-col shrink-0 overflow-y-auto"
@@ -369,67 +395,6 @@ export default function DashboardLayout() {
           </AnimatePresence>
         </main>
       </div>
-
-      {/* ── Mobile bottom tab bar ─────────────────────────────────── */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-[60] flex items-stretch safe-bottom"
-        style={{
-          background:    "rgba(10,12,17,0.97)",
-          backdropFilter:"blur(20px)",
-          borderTop:     "1px solid rgba(37,45,61,0.4)",
-          height:        "calc(60px + env(safe-area-inset-bottom, 0px))",
-        }}>
-        {/* Core user tabs always visible */}
-        {([
-          { id:"overview",    icon: ICONS.grid,   label:"Home"    },
-          { id:"trade",       icon: ICONS.trade,  label:"Trade"   },
-          { id:"wallet",      icon: ICONS.wallet, label:"Wallet"  },
-          { id:"performance", icon: ICONS.chart,  label:"Stats"   },
-          { id:"settings",    icon: ICONS.cog,    label:"More"    },
-        ] as { id: Tab; icon: React.ReactNode; label: string }[]).map(item => {
-          const active = activeTab === item.id;
-          return (
-            <button key={item.id}
-              onClick={() => {
-                if (item.id === "settings") {
-                  // "More" opens the sidebar drawer instead of navigating
-                  setMobileOpen(o => !o);
-                } else {
-                  setActiveTab(item.id);
-                  setMobileOpen(false);
-                }
-              }}
-              style={{
-                flex:       1,
-                position:   "relative",
-                display:    "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                gap:        3,
-                paddingTop: 8,
-                paddingBottom: 4,
-                background: "none",
-                border:     "none",
-                cursor:     "pointer",
-                color:      active ? "#10d48e" : "#4a5568",
-                minHeight:  "unset",
-                minWidth:   "unset",
-                transition: "color 0.15s",
-              }}>
-              <span style={{ opacity: active ? 1 : 0.6, transform: active ? "scale(1.1)" : "scale(1)", transition:"all 0.15s" }}>
-                {item.icon}
-              </span>
-              <span style={{ fontSize:10, fontWeight: active ? 700 : 400, letterSpacing:"0.02em" }}>
-                {item.label}
-              </span>
-              {active && (
-                <motion.div layoutId="bottom-tab-dot"
-                  style={{ position:"absolute", top:0, width:24, height:2, background:"#10d48e", borderRadius:"0 0 2px 2px" }}/>
-              )}
-            </button>
-          );
-        })}
-      </nav>
     </div>
   );
 }

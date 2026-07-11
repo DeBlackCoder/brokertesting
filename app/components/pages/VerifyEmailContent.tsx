@@ -119,7 +119,7 @@ export default function VerifyEmailContent() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-6 py-32" style={{ background: "#080a0f" }}>
+    <div className="min-h-screen flex items-center justify-center px-6 py-32 pb-24" style={{ background: "#080a0f" }}>
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true"
         style={{ backgroundImage: `linear-gradient(rgba(37,45,61,0.1) 1px,transparent 1px),linear-gradient(90deg,rgba(37,45,61,0.1) 1px,transparent 1px)`, backgroundSize: "80px 80px" }} />
 

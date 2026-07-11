@@ -224,7 +224,7 @@ export default function MarketsPageContent() {
                     <span style={{ color: "#f0ede8", fontWeight: 500 }}>{m.name}</span>
                     <span style={{ color: "#6b7a8d" }}>{m.exchanges}</span>
                     <span style={{ color: cat.accent }}>{m.instruments}</span>
-                    <span style={{ color: "#9fa8b4", fontFamily: "monospace" }}>{m.minSpread}</span>
+                    <span style={{ color: "#9fa8b4", fontFamily: "var(--font-mono, JetBrains Mono, monospace)" }}>{m.minSpread}</span>
                   </motion.div>
                 ))}
               </div>

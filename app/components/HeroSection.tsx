@@ -101,7 +101,7 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 1, ease: [0.16, 1, 0.3, 1] }}
             className="leading-none font-bold"
-            style={{ fontSize: "clamp(2rem, 9vw, 12rem)", letterSpacing: "-0.03em", color: "#f0ede8" }}
+            style={{ fontSize: "clamp(2rem, 9vw, 12rem)", letterSpacing: "-0.02em", color: "#f0ede8", fontFamily: "var(--font-hero, Cormorant Garamond, Georgia, serif)", fontWeight: 700 }}
           >
             THE FUTURE
           </motion.h1>
@@ -110,7 +110,7 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.65, duration: 1, ease: [0.16, 1, 0.3, 1] }}
             className="leading-none font-bold text-gradient-emerald"
-            style={{ fontSize: "clamp(2rem, 9vw, 12rem)", letterSpacing: "-0.03em" }}
+            style={{ fontSize: "clamp(2rem, 9vw, 12rem)", letterSpacing: "-0.02em", fontFamily: "var(--font-hero, Cormorant Garamond, Georgia, serif)", fontWeight: 700 }}
           >
             OF WEALTH
           </motion.h1>

@@ -79,7 +79,7 @@ export default function SignInPageContent() {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center px-6 py-32"
+      className="min-h-screen flex items-center justify-center px-6 py-32 pb-24"
       style={{ background: "#080a0f" }}
     >
       <div

@@ -124,7 +124,7 @@ export default function PositionsTable({ prices, onRefresh, positions, history, 
     color:"#4a5568", fontSize:11, fontWeight:600, textTransform:"uppercase",
     letterSpacing:"0.05em", paddingBottom:8, paddingRight:10, whiteSpace:"nowrap",
   };
-  const td: React.CSSProperties = { paddingTop:10, paddingBottom:10, paddingRight:10, fontSize:12 };
+  const td: React.CSSProperties = { paddingTop:10, paddingBottom:10, paddingRight:10, fontSize:12, fontFamily:"var(--font-mono, JetBrains Mono, monospace)" };
 
   // Totals row
   const totalLivePnl = positions.reduce((sum, pos) => {
@@ -155,7 +155,7 @@ export default function PositionsTable({ prices, onRefresh, positions, history, 
         </div>
         {/* Live total PnL */}
         {tab === "open" && positions.length > 0 && (
-          <div style={{ fontSize:12, fontFamily:"monospace" }}>
+          <div style={{ fontSize:12, fontFamily:"var(--font-mono, JetBrains Mono, monospace)" }}>
             Total P&L:{" "}
             <span style={{ fontWeight:700, color: totalLivePnl >= 0 ? "#10d48e" : "#ef4444" }}>
               {totalLivePnl >= 0 ? "+" : ""}{totalLivePnl.toFixed(2)}
@@ -204,21 +204,21 @@ export default function PositionsTable({ prices, onRefresh, positions, history, 
                             {pos.side}
                           </span>
                         </td>
-                        <td style={{ ...td, fontFamily:"monospace", color:"#9fa8b4" }}>{pos.lotSize}</td>
-                        <td style={{ ...td, fontFamily:"monospace", color:"#9fa8b4" }}>{formatPrice(pos.entryPrice)}</td>
-                        <td style={{ ...td, fontFamily:"monospace", color:"#f0ede8", fontWeight:600 }}>{formatPrice(current)}</td>
+                        <td style={{ ...td, color:"#9fa8b4" }}>{pos.lotSize}</td>
+                        <td style={{ ...td, color:"#9fa8b4" }}>{formatPrice(pos.entryPrice)}</td>
+                        <td style={{ ...td, color:"#f0ede8", fontWeight:600 }}>{formatPrice(current)}</td>
                         <td style={td}>
                           <div>
                             <PnlCell pnl={livePnl} prev={prev}/>
                             <div style={{ fontSize:10, color:"#4a5568" }}>{pnlPct}%</div>
                           </div>
                         </td>
-                        <td style={{ ...td, fontFamily:"monospace" }}>
+                        <td style={td}>
                           {pos.stopLoss ? (
                             <span style={{ color:"#ef4444" }}>{formatPrice(pos.stopLoss)}</span>
                           ) : <span style={{ color:"#4a5568" }}>—</span>}
                         </td>
-                        <td style={{ ...td, fontFamily:"monospace" }}>
+                        <td style={td}>
                           {pos.takeProfit ? (
                             <span style={{ color:"#10d48e" }}>{formatPrice(pos.takeProfit)}</span>
                           ) : <span style={{ color:"#4a5568" }}>—</span>}
@@ -271,9 +271,9 @@ export default function PositionsTable({ prices, onRefresh, positions, history, 
                           {pos.side}
                         </span>
                       </td>
-                      <td style={{ ...td, fontFamily:"monospace", color:"#9fa8b4" }}>{pos.lotSize}</td>
-                      <td style={{ ...td, fontFamily:"monospace", color:"#9fa8b4" }}>{formatPrice(pos.entryPrice)}</td>
-                      <td style={{ ...td, fontFamily:"monospace", color:"#9fa8b4" }}>{ep ? formatPrice(ep) : "—"}</td>
+                      <td style={{ ...td, color:"#9fa8b4" }}>{pos.lotSize}</td>
+                      <td style={{ ...td, color:"#9fa8b4" }}>{formatPrice(pos.entryPrice)}</td>
+                      <td style={{ ...td, color:"#9fa8b4" }}>{ep ? formatPrice(ep) : "—"}</td>
                       <td style={td}>
                         <span className="font-mono font-bold" style={{ color: pnlPos?"#10d48e":"#ef4444" }}>
                           {pnlPos?"+":""}{pos.pnl.toFixed(2)}

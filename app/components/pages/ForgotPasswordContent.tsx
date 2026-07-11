@@ -153,7 +153,7 @@ export default function ForgotPasswordContent() {
 
   const pageStyle: React.CSSProperties = {
     minHeight: "100vh", display: "flex", alignItems: "center",
-    justifyContent: "center", padding: "5rem 1.5rem", background: "#080a0f",
+    justifyContent: "center", padding: "5rem 1.5rem 6rem", background: "#080a0f",
   };
   const gridBg: React.CSSProperties = {
     backgroundImage: `linear-gradient(rgba(37,45,61,0.1) 1px,transparent 1px),linear-gradient(90deg,rgba(37,45,61,0.1) 1px,transparent 1px)`,

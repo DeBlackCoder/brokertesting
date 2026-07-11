@@ -40,11 +40,30 @@ function Field({ label, sub, children }: { label:string; sub?:string; children:R
 
 function Toggle({ on, onChange }: { on:boolean; onChange:(v:boolean)=>void }) {
   return (
-    <button onClick={() => onChange(!on)} className="relative w-10 h-5 rounded-full transition-colors"
-      style={{ background: on ? "#10d48e" : "rgba(37,45,61,0.6)" }}>
-      <motion.div className="absolute top-0.5 w-4 h-4 rounded-full"
-        style={{ background:"#fff", left: on ? 22 : 2 }}
-        animate={{ left: on ? 22 : 2 }} transition={{ type:"spring", stiffness:400, damping:25 }}/>
+    <button
+      onClick={() => onChange(!on)}
+      style={{
+        position:        "relative",
+        display:         "inline-flex",
+        alignItems:      "center",
+        width:           44,
+        height:          24,
+        borderRadius:    12,
+        border:          "none",
+        cursor:          "pointer",
+        flexShrink:      0,
+        background:      on ? "#10d48e" : "rgba(37,45,61,0.6)",
+        transition:      "background 0.2s",
+        padding:         0,
+      }}
+      aria-checked={on}
+      role="switch"
+    >
+      <motion.div
+        style={{ position:"absolute", top:3, width:18, height:18, borderRadius:"50%", background:"#fff", boxShadow:"0 1px 3px rgba(0,0,0,0.3)" }}
+        animate={{ left: on ? 23 : 3 }}
+        transition={{ type:"spring", stiffness:500, damping:30 }}
+      />
     </button>
   );
 }

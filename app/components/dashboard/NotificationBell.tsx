@@ -94,8 +94,21 @@ export default function NotificationBell({ onNavigate }: Props) {
     <div ref={ref} style={{ position: "relative" }}>
       <button
         onClick={() => { setOpen(o => !o); if (!open) fetch_(); }}
-        className="w-8 h-8 flex items-center justify-center relative"
-        style={{ border: "1px solid rgba(37,45,61,0.4)", borderRadius: "4px", background: "rgba(14,17,24,0.6)", color: "#6b7a8d" }}
+        style={{
+          display:        "flex",
+          alignItems:     "center",
+          justifyContent: "center",
+          width:          32,
+          height:         32,
+          position:       "relative",
+          background:     "rgba(14,17,24,0.6)",
+          border:         "1px solid rgba(37,45,61,0.4)",
+          borderRadius:   4,
+          cursor:         "pointer",
+          color:          "#6b7a8d",
+          flexShrink:     0,
+          padding:        0,
+        }}
         aria-label="Notifications"
       >
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">

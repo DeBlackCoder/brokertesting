@@ -376,7 +376,7 @@ function DepositsTab() {
                     <span className="ml-2 text-xs font-normal" style={{ color:"#c9a84c" }}>pending</span>
                   </div>
                   <div className="text-xs mt-0.5" style={{ color:"#6b7a8d" }}>
-                    {dep.userName} · <span style={{ fontFamily:"monospace" }}>{dep.userEmail}</span>
+                    {dep.userName} · <span style={{ fontFamily:"var(--font-mono, JetBrains Mono, monospace)" }}>{dep.userEmail}</span>
                   </div>
                   {dep.txHash && (
                     <div className="text-xs mt-1 font-mono break-all" style={{ color:"#4a5568" }}>

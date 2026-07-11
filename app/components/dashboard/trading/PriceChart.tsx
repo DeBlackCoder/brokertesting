@@ -98,7 +98,7 @@ export default function PriceChart({ base, currentPrice, openPositions = [] }: P
       <div style={{ width:"100%", height:"100%", background:BG, display:"flex", alignItems:"center", justifyContent:"center", flexDirection:"column", gap:8 }}>
         <motion.div style={{ width:8, height:8, borderRadius:"50%", background:UP_COL, boxShadow:`0 0 12px ${UP_COL}` }}
           animate={{ scale:[1,1.8,1], opacity:[1,0.3,1] }} transition={{ duration:1.2, repeat:Infinity }}/>
-        <span style={{ color:"#2a3a5a", fontSize:11, fontFamily:"monospace" }}>Loading chart…</span>
+        <span style={{ color:"#2a3a5a", fontSize:11, fontFamily:"var(--font-mono, JetBrains Mono, monospace)" }}>Loading chart…</span>
       </div>
     );
   }
@@ -276,7 +276,7 @@ export default function PriceChart({ base, currentPrice, openPositions = [] }: P
           return (
             <text key={i}
               x={W - PAD_R + 5} y={y + 5}
-              fill="#3a5080" fontSize={13} fontFamily="monospace" fontWeight="500">
+              fill="#3a5080" fontSize={13} fontFamily="var(--font-mono, JetBrains Mono, monospace)" fontWeight="500">
               {formatPrice(v)}
             </text>
           );
@@ -311,7 +311,7 @@ export default function PriceChart({ base, currentPrice, openPositions = [] }: P
             padding:      "4px 10px",
             fontSize:     13,
             fontWeight:   700,
-            fontFamily:   "monospace",
+            fontFamily:   "var(--font-mono, JetBrains Mono, monospace)",
             color:        "#fff",
             letterSpacing:"0.03em",
             whiteSpace:   "nowrap",
