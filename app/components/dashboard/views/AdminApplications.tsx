@@ -73,7 +73,7 @@ export default function AdminApplications() {
   };
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 w-full">
       <div>
         <h1 className="text-xl font-bold" style={{ color: "#f0ede8", letterSpacing: "-0.02em" }}>Applications</h1>
         <p className="text-xs mt-1" style={{ color: "#4a5568" }}>

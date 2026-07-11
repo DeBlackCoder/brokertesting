@@ -140,7 +140,7 @@ export default function DashTrade() {
   const balance = activeSession?.type === "live" ? (wallet?.liveBalance ?? 0) : (wallet?.demoBalance ?? 0);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 w-full">
       {/* Header bar */}
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div className="flex items-center gap-2 flex-wrap">

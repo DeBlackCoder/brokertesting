@@ -64,7 +64,7 @@ export default function AdminPayouts() {
   const [tab, setTab] = useState<"payouts"|"deposits"|"broadcast">("payouts");
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 w-full">
       <div>
         <h1 className="text-xl font-bold" style={{ color:"#f0ede8", letterSpacing:"-0.02em" }}>
           Finance & Comms

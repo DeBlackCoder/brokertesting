@@ -96,7 +96,7 @@ export default function DashMyAccount() {
   if (error) return <ErrorState message={error} onRetry={refetch}/>;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-bold" style={{ color: "#f0ede8", letterSpacing: "-0.02em" }}>My Account</h1>

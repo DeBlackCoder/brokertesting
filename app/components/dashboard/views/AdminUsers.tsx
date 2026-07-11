@@ -139,7 +139,7 @@ export default function AdminUsers() {
   const filterSel: React.CSSProperties = { ...inp, width:"auto", appearance:"none" };
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 w-full">
       {/* Header */}
       <div>
         <h1 className="text-xl font-bold" style={{ color:"#f0ede8", letterSpacing:"-0.02em" }}>Users</h1>

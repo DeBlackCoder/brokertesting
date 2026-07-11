@@ -144,7 +144,7 @@ export default function AdminWallet() {
   const users = usersData?.users ?? [];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full">
       <div>
         <h1 className="text-xl font-bold" style={{ color:"#f0ede8", letterSpacing:"-0.02em" }}>Wallet Management</h1>
         <p className="text-xs mt-1" style={{ color:"#4a5568" }}>Manage deposit address, credit/debit users, and award trading bonuses.</p>

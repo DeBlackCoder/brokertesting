@@ -95,7 +95,7 @@ export default function DashWallet() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 w-full">
       <div>
         <h1 className="text-xl font-bold" style={{ color:"#f0ede8", letterSpacing:"-0.02em" }}>Wallet</h1>
         <p className="text-xs mt-1" style={{ color:"#4a5568" }}>Manage your live and demo trading funds.</p>
@@ -224,36 +224,39 @@ export default function DashWallet() {
         ) : !data?.transactions.length ? (
           <p className="text-sm text-center py-8" style={{ color:"#4a5568" }}>No transactions yet.</p>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full" style={{ minWidth: 480 }}>
+          <div className="overflow-x-auto" style={{ WebkitOverflowScrolling: "touch" }}>
+            <table className="w-full" style={{ minWidth: 0 }}>
               <thead>
                 <tr style={{ borderBottom:"1px solid rgba(37,45,61,0.4)" }}>
-                  {["Date","Type","Amount","Note","Status"].map(h => (
-                    <th key={h} className="pb-3 text-left text-xs font-medium pr-5 whitespace-nowrap" style={{ color:"#4a5568" }}>{h}</th>
-                  ))}
+                  <th className="pb-2 text-left text-xs font-medium pr-3" style={{ color:"#4a5568" }}>Date</th>
+                  <th className="pb-2 text-left text-xs font-medium pr-3" style={{ color:"#4a5568" }}>Type</th>
+                  <th className="pb-2 text-left text-xs font-medium pr-3" style={{ color:"#4a5568" }}>Amount</th>
+                  <th className="pb-2 text-left text-xs font-medium pr-3 hidden sm:table-cell" style={{ color:"#4a5568" }}>Note</th>
+                  <th className="pb-2 text-left text-xs font-medium" style={{ color:"#4a5568" }}>Status</th>
                 </tr>
               </thead>
               <tbody>
                 {data.transactions.map(t => (
                   <tr key={t._id} style={{ borderBottom:"1px solid rgba(37,45,61,0.2)" }}>
-                    <td className="py-2.5 pr-5 text-xs" style={{ color:"#6b7a8d" }}>
-                      {new Date(t.createdAt).toLocaleDateString()}
+                    <td className="py-2 pr-3 text-xs" style={{ color:"#6b7a8d", whiteSpace:"nowrap" }}>
+                      {new Date(t.createdAt).toLocaleDateString("en-US",{month:"short",day:"numeric"})}
                     </td>
-                    <td className="py-2.5 pr-5">
-                      <span className="text-xs px-2 py-0.5 rounded capitalize"
-                        style={{ background:`${TX_COLOR[t.type] ?? "#6b7a8d"}18`, color: TX_COLOR[t.type] ?? "#6b7a8d" }}>
+                    <td className="py-2 pr-3">
+                      <span className="text-xs px-1.5 py-0.5 rounded capitalize"
+                        style={{ background:`${TX_COLOR[t.type] ?? "#6b7a8d"}18`, color: TX_COLOR[t.type] ?? "#6b7a8d", whiteSpace:"nowrap" }}>
                         {t.type.replace("_"," ")}
                       </span>
                     </td>
-                    <td className="py-2.5 pr-5 font-bold font-mono text-xs"
+                    <td className="py-2 pr-3 font-bold font-mono text-xs whitespace-nowrap"
                       style={{ color: TX_COLOR[t.type] ?? "#9fa8b4" }}>
-                      {TX_SIGN[t.type] ?? "+"} ${t.amount.toLocaleString()}
+                      {TX_SIGN[t.type] ?? "+"}${t.amount.toLocaleString()}
                     </td>
-                    <td className="py-2.5 pr-5 text-xs" style={{ color:"#6b7a8d", maxWidth:180, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
+                    <td className="py-2 pr-3 text-xs hidden sm:table-cell"
+                      style={{ color:"#6b7a8d", maxWidth:140, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
                       {t.note ?? "—"}
                     </td>
-                    <td className="py-2.5">
-                      <span className="text-xs capitalize font-semibold px-2 py-0.5 rounded"
+                    <td className="py-2">
+                      <span className="text-xs capitalize font-semibold px-1.5 py-0.5 rounded whitespace-nowrap"
                         style={{
                           background: t.status==="confirmed" ? "rgba(16,212,142,0.1)" : t.status==="pending" ? "rgba(201,168,76,0.1)" : "rgba(239,68,68,0.1)",
                           color:      t.status==="confirmed" ? "#10d48e"              : t.status==="pending" ? "#c9a84c"              : "#ef4444",

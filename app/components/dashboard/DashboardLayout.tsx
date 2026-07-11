@@ -384,7 +384,7 @@ export default function DashboardLayout() {
         </header>
 
         {/* Page content */}
-        <main className="flex-1 overflow-auto p-4 md:p-7 dash-main scroll-smooth-ios">
+        <main className="flex-1 overflow-x-hidden overflow-y-auto p-4 md:p-7 dash-main scroll-smooth-ios">
           <AnimatePresence mode="wait">
             <motion.div key={activeTab}
               initial={{ opacity:0, y:8 }} animate={{ opacity:1, y:0 }}

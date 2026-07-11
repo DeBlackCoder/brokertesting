@@ -39,12 +39,9 @@ const TICKER_ITEMS = [
 export default function TickerBar() {
   const trackRef = useRef<HTMLDivElement>(null);
   const [duration, setDuration] = useState<number | null>(null);
-  const { user, loaded } = useAuth();
+  const { loaded } = useAuth();
 
   useEffect(() => {
-    // Don't measure if hidden
-    if (loaded && user) return;
-
     const el = trackRef.current;
     if (!el) return;
 
@@ -61,10 +58,7 @@ export default function TickerBar() {
       ro.disconnect();
       window.removeEventListener("resize", measure);
     };
-  }, [loaded, user]);
-
-  // Hide when signed in — after all hooks have been called
-  if (loaded && user) return null;
+  }, [loaded]);
 
   return (
     <motion.div

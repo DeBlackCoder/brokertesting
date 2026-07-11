@@ -44,9 +44,8 @@
 html {
   scroll-behavior: smooth;
   background: var(--aurex-obsidian);
-  /* Fixed ticker is ~44px + safe-area. 80px gives comfortable clearance
-     on all devices including iPhone notch/home-bar */
-  padding-bottom: 80px;
+  /* Fixed ticker ~44px. 88px = ticker + 44px visible gap above it on scroll end */
+  padding-bottom: 88px;
   box-sizing: border-box;
 }
 
@@ -193,12 +192,12 @@ button, a, [role="button"] {
 
 /* Dashboard main content — clear the fixed ticker bar at the bottom */
 .dash-main {
-  padding-bottom: 100px;
+  padding-bottom: 108px;
 }
 
 @media (min-width: 768px) {
   .dash-main {
-    padding-bottom: 80px;
+    padding-bottom: 88px;
   }
 }
 
@@ -218,6 +217,8 @@ button, a, [role="button"] {
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
+  /* Ensure children with overflow-x-auto still scroll independently */
+  contain: inline-size;
 }
 
 /* Number counter */
