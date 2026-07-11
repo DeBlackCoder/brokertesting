@@ -102,24 +102,24 @@ export default function DashWallet() {
       </div>
 
       {/* ── Balance cards ── */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
         {loading ? <><CardSkeleton/><CardSkeleton/></> : (
           <>
             {/* Live wallet */}
             <motion.div initial={{ opacity:0,y:16 }} animate={{ opacity:1,y:0 }}
-              className="p-6 relative overflow-hidden"
+              className="p-4 md:p-6 relative overflow-hidden"
               style={{ background:"rgba(14,17,24,0.8)", border:"1px solid rgba(37,45,61,0.45)", borderRadius:8 }}>
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-3">
                 <div className="text-xs font-bold tracking-widest uppercase" style={{ color:"#6b7a8d" }}>Live Balance</div>
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center text-sm"
+                <div className="w-7 h-7 rounded-lg flex items-center justify-center text-sm"
                   style={{ background:"rgba(16,212,142,0.1)", color:"#10d48e" }}>$</div>
               </div>
-              <div className="text-2xl md:text-3xl font-bold tabular-nums mb-2" style={{ color:"#10d48e", letterSpacing:"-0.03em" }}>
+              <div className="text-xl md:text-3xl font-bold tabular-nums mb-1" style={{ color:"#10d48e", letterSpacing:"-0.03em" }}>
                 ${(data?.liveBalance ?? 0).toLocaleString("en-US", { minimumFractionDigits:2 })}
               </div>
-              <div className="text-xs mb-4" style={{ color:"#4a5568" }}>Available for live trading</div>
+              <div className="text-xs mb-3" style={{ color:"#4a5568" }}>Available for live trading</div>
               <button onClick={() => setShowDeposit(true)}
-                className="text-xs px-4 py-2 rounded font-semibold"
+                className="text-xs px-3 py-1.5 rounded font-semibold"
                 style={{ background:"rgba(16,212,142,0.1)", border:"1px solid rgba(16,212,142,0.3)", color:"#10d48e" }}>
                 + Deposit Funds
               </button>
@@ -128,17 +128,17 @@ export default function DashWallet() {
 
             {/* Demo wallet */}
             <motion.div initial={{ opacity:0,y:16 }} animate={{ opacity:1,y:0 }} transition={{ delay:0.07 }}
-              className="p-6 relative overflow-hidden"
+              className="p-4 md:p-6 relative overflow-hidden"
               style={{ background:"rgba(14,17,24,0.8)", border:"1px solid rgba(37,45,61,0.45)", borderRadius:8 }}>
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-3">
                 <div className="text-xs font-bold tracking-widest uppercase" style={{ color:"#6b7a8d" }}>Demo Balance</div>
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center text-sm"
+                <div className="w-7 h-7 rounded-lg flex items-center justify-center text-sm"
                   style={{ background:"rgba(0,188,212,0.1)", color:"#00bcd4" }}>◎</div>
               </div>
-              <div className="text-2xl md:text-3xl font-bold tabular-nums mb-2" style={{ color:"#00bcd4", letterSpacing:"-0.03em" }}>
+              <div className="text-xl md:text-3xl font-bold tabular-nums mb-1" style={{ color:"#00bcd4", letterSpacing:"-0.03em" }}>
                 ${(data?.demoBalance ?? 0).toLocaleString("en-US", { minimumFractionDigits:2 })}
               </div>
-              <div className="text-xs mb-4" style={{ color:"#4a5568" }}>Paper trading funds — add anytime</div>
+              <div className="text-xs mb-3" style={{ color:"#4a5568" }}>Paper trading funds — add anytime</div>
               <div className="flex gap-2">
                 <input type="number" placeholder="Amount" value={topupAmt} onChange={e => setTopupAmt(e.target.value)}
                   className="flex-1 text-sm outline-none"
@@ -164,9 +164,9 @@ export default function DashWallet() {
 
       {/* ── Deposit address ── */}
       <motion.div initial={{ opacity:0,y:16 }} animate={{ opacity:1,y:0 }} transition={{ delay:0.15 }}
-        className="p-5"
+        className="p-4 md:p-5"
         style={{ background:"rgba(14,17,24,0.8)", border:"1px solid rgba(37,45,61,0.45)", borderRadius:8 }}>
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
           <h2 className="text-sm font-bold" style={{ color:"#f0ede8" }}>Deposit Address</h2>
           {data?.depositAddress && (
             <button onClick={() => setShowDeposit(true)}
@@ -176,34 +176,34 @@ export default function DashWallet() {
             </button>
           )}
         </div>
-        <p className="text-xs mb-4" style={{ color:"#4a5568" }}>
-          Send crypto to the address below, then click <strong style={{ color:"#f0ede8" }}>I've Sent Funds</strong> to notify our team. Your balance will be credited after confirmation.
+        <p className="text-xs mb-3" style={{ color:"#4a5568" }}>
+          Send crypto to the address below, then click <strong style={{ color:"#f0ede8" }}>I've Sent Funds</strong> to notify our team.
         </p>
         {loading ? (
           <div className="h-10 animate-pulse rounded" style={{ background:"rgba(37,45,61,0.3)" }}/>
         ) : !data?.depositAddress ? (
-          <div className="flex items-center gap-3 px-4 py-3 rounded" style={{ background:"rgba(37,45,61,0.2)", border:"1px dashed rgba(37,45,61,0.5)" }}>
+          <div className="flex items-center gap-3 px-3 py-3 rounded" style={{ background:"rgba(37,45,61,0.2)", border:"1px dashed rgba(37,45,61,0.5)" }}>
             <span className="text-lg">⚙️</span>
             <p className="text-xs" style={{ color:"#6b7a8d" }}>Deposit address not configured yet. Contact support.</p>
           </div>
         ) : (
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <div className="flex-1 px-4 py-3 rounded font-mono text-sm break-all"
-                style={{ background:"rgba(37,45,61,0.3)", color:"#10d48e", border:"1px solid rgba(37,45,61,0.5)" }}>
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <div className="flex-1 min-w-0 px-3 py-2.5 rounded font-mono text-xs break-all"
+                style={{ background:"rgba(37,45,61,0.3)", color:"#10d48e", border:"1px solid rgba(37,45,61,0.5)", wordBreak:"break-all" }}>
                 {data.depositAddress}
               </div>
               <button onClick={copyAddress}
-                className="shrink-0 px-4 py-3 text-xs font-semibold rounded transition-all"
+                className="shrink-0 px-3 py-2.5 text-xs font-semibold rounded"
                 style={{ background: copied ? "rgba(16,212,142,0.15)" : "rgba(37,45,61,0.4)", color: copied ? "#10d48e" : "#9fa8b4", border:"1px solid rgba(37,45,61,0.5)" }}>
-                {copied ? "✓ Copied" : "Copy"}
+                {copied ? "✓" : "Copy"}
               </button>
             </div>
             <div className="flex items-start gap-2 px-3 py-2 rounded"
               style={{ background:"rgba(201,168,76,0.06)", border:"1px solid rgba(201,168,76,0.15)" }}>
-              <span style={{ color:"#c9a84c", fontSize:12, marginTop:1 }}>⚠</span>
+              <span style={{ color:"#c9a84c", fontSize:11, marginTop:1, flexShrink:0 }}>⚠</span>
               <p className="text-xs" style={{ color:"#c9a84c" }}>
-                Only send USDT (TRC-20) to this address. Sending other assets may result in permanent loss.
+                Only send USDT (TRC-20). Other assets may be permanently lost.
               </p>
             </div>
           </div>
@@ -212,9 +212,9 @@ export default function DashWallet() {
 
       {/* ── Transaction history ── */}
       <motion.div initial={{ opacity:0,y:16 }} animate={{ opacity:1,y:0 }} transition={{ delay:0.22 }}
-        className="p-5"
+        className="p-4 md:p-5"
         style={{ background:"rgba(14,17,24,0.8)", border:"1px solid rgba(37,45,61,0.45)", borderRadius:8 }}>
-        <h2 className="text-sm font-bold mb-4" style={{ color:"#f0ede8" }}>Transaction History</h2>
+        <h2 className="text-sm font-bold mb-3 md:mb-4" style={{ color:"#f0ede8" }}>Transaction History</h2>
         {loading ? (
           <div className="space-y-3">
             {Array.from({length:4}).map((_,i) => (

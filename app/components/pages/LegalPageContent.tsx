@@ -24,7 +24,7 @@ export default function LegalPageContent({ title, lastUpdated, sections }: Legal
         <div className="max-w-4xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <h1
             className="text-3xl font-bold"
-            style={{ color: "#f0ede8", letterSpacing: "-0.02em" }}
+            style={{ color: "#f0ede8", letterSpacing: "-0.02em", fontFamily: "var(--font-hero, Cormorant Garamond, Georgia, serif)" }}
           >
             {title}
           </h1>

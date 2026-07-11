@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { useAuth } from "@/lib/useAuth";
 
 const BG        = "#0a0907"; // matches HeroSection ink background
 const PAPER     = "#f3ead8";
@@ -38,14 +39,16 @@ const TICKER_ITEMS = [
 export default function TickerBar() {
   const trackRef = useRef<HTMLDivElement>(null);
   const [duration, setDuration] = useState<number | null>(null);
+  const { user, loaded } = useAuth();
 
   useEffect(() => {
+    // Don't measure if hidden
+    if (loaded && user) return;
+
     const el = trackRef.current;
     if (!el) return;
 
     const measure = () => {
-      // Track holds 3 copies of the item set for a seamless loop;
-      // one set's width is what the animation actually needs to travel.
       const setWidth = el.scrollWidth / 3;
       if (setWidth > 0) setDuration(setWidth / PIXELS_PER_SECOND);
     };
@@ -58,7 +61,10 @@ export default function TickerBar() {
       ro.disconnect();
       window.removeEventListener("resize", measure);
     };
-  }, []);
+  }, [loaded, user]);
+
+  // Hide when signed in — after all hooks have been called
+  if (loaded && user) return null;
 
   return (
     <motion.div
