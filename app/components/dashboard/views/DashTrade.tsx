@@ -19,6 +19,17 @@ interface Position { _id:string; symbol:string; side:"buy"|"sell"; lotSize:numbe
 
 const WATCHLIST_BASES = INSTRUMENTS.map(i => i.base);
 
+function EyeIcon({ off, size = 12 }: { off?: boolean; size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 12 12" fill="none">
+      <path d="M6 2C3.5 2 1.5 4 1.5 6s2 4 4.5 4 4.5-2 4.5-4-2-4-4.5-4z" stroke="currentColor" strokeWidth="1"/>
+      {off
+        ? <line x1="1.5" y1="1.5" x2="10.5" y2="10.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+        : <circle cx="6" cy="6" r="1.5" fill="currentColor"/>}
+    </svg>
+  );
+}
+
 export default function DashTrade() {
   const { data: sessions, loading: sLoad, refetch: refetchSessions } = useApi<Session[]>("/api/wallet/sessions");
   const { data: wallet,   refetch: refetchWallet }                   = useApi<WalletData>("/api/wallet");
@@ -60,6 +71,52 @@ export default function DashTrade() {
     prevPriceRef.current = livePrice.price;
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [livePrice?.price]);
+
+  // Tick flash on the main quote — the single most recognizable cue in any
+  // real trading terminal: a brief green/red wash whenever the print moves,
+  // independent color from static up/down state so it reads as "just moved"
+  // rather than "currently up".
+  const [priceFlash, setPriceFlash] = useState<"up" | "down" | null>(null);
+  const mainPricePrevRef = useRef<number | null>(null);
+  useEffect(() => {
+    if (!livePrice) return;
+    const prev = mainPricePrevRef.current;
+    if (prev !== null && livePrice.price !== prev) {
+      setPriceFlash(livePrice.price > prev ? "up" : "down");
+      const t = setTimeout(() => setPriceFlash(null), 450);
+      mainPricePrevRef.current = livePrice.price;
+      return () => clearTimeout(t);
+    }
+    mainPricePrevRef.current = livePrice.price;
+  }, [livePrice?.price]);
+
+  // Same flash treatment for the watchlist rows — each symbol flashes
+  // independently as its own ticks arrive.
+  const prevWatchRef = useRef<Record<string, number>>({});
+  const [wFlash, setWFlash] = useState<Record<string, "up" | "down">>({});
+  useEffect(() => {
+    const changed: Record<string, "up" | "down"> = {};
+    Object.entries(watchlist).forEach(([base, pd]) => {
+      if (pd?.price == null) return;
+      const prev = prevWatchRef.current[base];
+      if (prev !== undefined && pd.price !== prev) {
+        changed[base] = pd.price > prev ? "up" : "down";
+      }
+      prevWatchRef.current[base] = pd.price;
+    });
+    if (Object.keys(changed).length) {
+      setWFlash(f => ({ ...f, ...changed }));
+      const t = setTimeout(() => {
+        setWFlash(f => {
+          const next = { ...f };
+          Object.keys(changed).forEach(k => delete next[k]);
+          return next;
+        });
+      }, 500);
+      return () => clearTimeout(t);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watchlist]);
 
   // Pick most recent active session on load
   useEffect(() => {
@@ -118,7 +175,11 @@ export default function DashTrade() {
 
         <div className="flex flex-col items-center justify-center py-24"
           style={{ border:"1px dashed rgba(37,45,61,0.4)", borderRadius:8 }}>
-          <div className="text-3xl mb-3" style={{ color:"#252d3d" }}>◎</div>
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2a3242" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom:12 }}>
+            <rect x="3.5" y="9" width="5" height="8" rx="1"/>
+            <rect x="10.5" y="4.5" width="5" height="12.5" rx="1"/>
+            <rect x="17.5" y="12" width="5" height="5" rx="1"/>
+          </svg>
           <p className="text-sm mb-4" style={{ color:"#4a5568" }}>No active trading session.</p>
           <button onClick={() => setShowStartModal(true)}
             className="px-5 py-2.5 text-sm font-semibold rounded"
@@ -138,6 +199,9 @@ export default function DashTrade() {
 
   // ── Full trading terminal ────────────────────────────────────────────────
   const balance = activeSession?.type === "live" ? (wallet?.liveBalance ?? 0) : (wallet?.demoBalance ?? 0);
+  const sessionPnlPct = activeSession && activeSession.startBalance > 0
+    ? (activeSession.totalPnl / activeSession.startBalance) * 100
+    : 0;
 
   return (
     <div className="space-y-4 w-full">
@@ -152,17 +216,29 @@ export default function DashTrade() {
             </span>
           )}
           {stealth && activeSession?.type === "demo" && (
-            <span className="text-xs px-2 py-0.5 rounded font-semibold"
+            <span className="flex items-center gap-1 text-xs px-2 py-0.5 rounded font-semibold"
               style={{ background:"rgba(201,168,76,0.1)", color:"#c9a84c", border:"1px solid rgba(201,168,76,0.2)" }}>
-              👁 Stealth
+              <EyeIcon off size={11}/> Stealth
             </span>
           )}
         </div>
-        <div className="flex items-center gap-2 flex-wrap">
-          <div className="text-xs font-mono" style={{ color:"#f0ede8" }}>
+        <div className="flex items-center gap-2.5 flex-wrap">
+          <div className="text-xs font-mono tabular-nums" style={{ color:"#f0ede8" }}>
             <span style={{ color:"#4a5568" }}>Bal </span>
             <span style={{ color:"#10d48e" }}>${balance.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2})}</span>
           </div>
+          {activeSession && (
+            <>
+              <div style={{ width:1, height:14, background:"rgba(107,122,141,0.3)" }}/>
+              <div className="text-xs font-mono tabular-nums">
+                <span style={{ color:"#4a5568" }}>P&L </span>
+                <span style={{ color: activeSession.totalPnl >= 0 ? "#10d48e" : "#ef4444", fontWeight:600 }}>
+                  {activeSession.totalPnl >= 0 ? "+" : ""}${activeSession.totalPnl.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2})}
+                  <span style={{ opacity:0.7 }}> ({activeSession.totalPnl >= 0 ? "+" : ""}{sessionPnlPct.toFixed(2)}%)</span>
+                </span>
+              </div>
+            </>
+          )}
           {activeSession?.type === "demo" && (
             <button onClick={() => setStealth(s => !s)}
               title={stealth ? "Show demo labels" : "Stealth mode"}
@@ -173,13 +249,8 @@ export default function DashTrade() {
                 border:     stealth ? "1px solid rgba(201,168,76,0.3)" : "1px solid rgba(37,45,61,0.5)",
                 minHeight:"unset", minWidth:"unset",
               }}>
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                {stealth
-                  ? <><path d="M6 2C3.5 2 1.5 4 1.5 6s2 4 4.5 4 4.5-2 4.5-4-2-4-4.5-4z" stroke="currentColor" strokeWidth="1"/><line x1="1.5" y1="1.5" x2="10.5" y2="10.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></>
-                  : <><path d="M6 2C3.5 2 1.5 4 1.5 6s2 4 4.5 4 4.5-2 4.5-4-2-4-4.5-4z" stroke="currentColor" strokeWidth="1"/><circle cx="6" cy="6" r="1.5" fill="currentColor"/></>
-                }
-              </svg>
-              <span className="hidden sm:inline">{stealth ? "Stealth" : "Stealth"}</span>
+              <EyeIcon off={stealth}/>
+              <span className="hidden sm:inline">Stealth</span>
             </button>
           )}
           <button onClick={() => { setShowStartModal(true); setStartError(""); }}
@@ -192,51 +263,84 @@ export default function DashTrade() {
 
       <div className="space-y-4">
         {/* ── Price header bar ── */}
-        <div className="flex items-center justify-between px-5 py-3"
+        <div className="py-3"
           style={{ background:"rgba(14,17,24,0.8)", border:"1px solid rgba(37,45,61,0.45)", borderRadius:8 }}>
-          <div className="flex items-center gap-5">
-            <div>
-              <div className="text-xl font-bold font-mono" style={{ color:"#f0ede8" }}>
-                {livePrice ? formatPrice(livePrice.price) : "—"}
+          <div className="flex items-center justify-between px-5">
+            <div className="flex items-center gap-5">
+              <div
+                className="px-2 -mx-2 rounded"
+                style={{
+                  backgroundColor: priceFlash === "up" ? "rgba(16,212,142,0.14)" : priceFlash === "down" ? "rgba(239,68,68,0.14)" : "transparent",
+                  transition: "background-color 0.35s ease-out",
+                }}>
+                <div
+                  className="text-xl font-bold font-mono tabular-nums"
+                  style={{
+                    color: priceFlash === "up" ? "#10d48e" : priceFlash === "down" ? "#ef4444" : "#f0ede8",
+                    transition: "color 0.35s ease-out",
+                  }}>
+                  {livePrice ? formatPrice(livePrice.price) : "—"}
+                </div>
+                <div className="text-xs" style={{ color:"#4a5568" }}>{activeInstrument.symbol} · {activeInstrument.name}</div>
               </div>
-              <div className="text-xs" style={{ color:"#4a5568" }}>{activeInstrument.symbol} · {activeInstrument.name}</div>
-            </div>
-            {livePrice && (
-              <>
-                <div className="hidden sm:block">
-                  <div className="text-xs mb-0.5" style={{ color:"#4a5568" }}>24h Change</div>
-                  <div className="text-sm font-semibold" style={{ color: changePos?"#10d48e":"#ef4444" }}>
-                    {changePos?"+":""}{livePrice.change24h.toFixed(2)}%
+              {livePrice && (
+                <>
+                  <div className="hidden sm:block">
+                    <div className="text-xs mb-0.5" style={{ color:"#4a5568" }}>24h Change</div>
+                    <div className="text-sm font-semibold tabular-nums" style={{ color: changePos?"#10d48e":"#ef4444" }}>
+                      {changePos?"+":""}{livePrice.change24h.toFixed(2)}%
+                    </div>
                   </div>
-                </div>
-                <div className="hidden md:block">
-                  <div className="text-xs mb-0.5" style={{ color:"#4a5568" }}>Ask</div>
-                  <div className="text-xs font-mono" style={{ color:"#10d48e" }}>{formatPrice(livePrice.ask)}</div>
-                </div>
-                <div className="hidden md:block">
-                  <div className="text-xs mb-0.5" style={{ color:"#4a5568" }}>Bid</div>
-                  <div className="text-xs font-mono" style={{ color:"#ef4444" }}>{formatPrice(livePrice.bid)}</div>
-                </div>
-                <div className="hidden lg:block">
-                  <div className="text-xs mb-0.5" style={{ color:"#4a5568" }}>Spread</div>
-                  <div className="text-xs font-mono" style={{ color:"#9fa8b4" }}>{formatPrice(livePrice.ask - livePrice.bid)}</div>
-                </div>
-              </>
-            )}
-          </div>
-          <div className="flex items-center gap-3">
-            {/* Instrument selector */}
-            <select value={selectedBase} onChange={e => setSelectedBase(e.target.value)}
-              className="text-xs px-3 py-1.5 outline-none appearance-none"
-              style={{ background:"rgba(37,45,61,0.4)", border:"1px solid rgba(37,45,61,0.5)", borderRadius:4, color:"#f0ede8" }}>
-              {INSTRUMENTS.map(i => <option key={i.base} value={i.base} style={{ background:"#0e1118" }}>{i.symbol}</option>)}
-            </select>
-            <div className="flex items-center gap-1.5">
-              <motion.div className="w-1.5 h-1.5 rounded-full" style={{ background:"#10d48e" }}
-                animate={{ scale:[1,1.5,1], opacity:[1,0.4,1] }} transition={{ duration:2, repeat:Infinity }} aria-hidden="true"/>
-              <span className="text-xs" style={{ color:"#10d48e" }}>LIVE</span>
+                  <div className="hidden md:block">
+                    <div className="text-xs mb-0.5" style={{ color:"#4a5568" }}>Ask</div>
+                    <div className="text-xs font-mono tabular-nums" style={{ color:"#10d48e" }}>{formatPrice(livePrice.ask)}</div>
+                  </div>
+                  <div className="hidden md:block">
+                    <div className="text-xs mb-0.5" style={{ color:"#4a5568" }}>Bid</div>
+                    <div className="text-xs font-mono tabular-nums" style={{ color:"#ef4444" }}>{formatPrice(livePrice.bid)}</div>
+                  </div>
+                  <div className="hidden lg:block">
+                    <div className="text-xs mb-0.5" style={{ color:"#4a5568" }}>Spread</div>
+                    <div className="text-xs font-mono tabular-nums" style={{ color:"#9fa8b4" }}>{formatPrice(livePrice.ask - livePrice.bid)}</div>
+                  </div>
+                </>
+              )}
+            </div>
+            <div className="flex items-center gap-3">
+              {/* Instrument selector */}
+              <select value={selectedBase} onChange={e => setSelectedBase(e.target.value)}
+                className="text-xs px-3 py-1.5 outline-none appearance-none"
+                style={{ background:"rgba(37,45,61,0.4)", border:"1px solid rgba(37,45,61,0.5)", borderRadius:4, color:"#f0ede8" }}>
+                {INSTRUMENTS.map(i => <option key={i.base} value={i.base} style={{ background:"#0e1118" }}>{i.symbol}</option>)}
+              </select>
+              <div className="flex items-center gap-1.5">
+                <motion.div className="w-1.5 h-1.5 rounded-full" style={{ background:"#10d48e" }}
+                  animate={{ scale:[1,1.5,1], opacity:[1,0.4,1] }} transition={{ duration:2, repeat:Infinity }} aria-hidden="true"/>
+                <span className="text-xs" style={{ color:"#10d48e" }}>LIVE</span>
+              </div>
             </div>
           </div>
+
+          {/* Mobile-only compact bid/ask/spread — real terminals never hide
+              this data on small screens, so instead of dropping it above
+              `md` it condenses into one row here. */}
+          {livePrice && (
+            <div className="flex sm:hidden items-center gap-4 px-5 pt-2.5 mt-2.5"
+              style={{ borderTop:"1px solid rgba(37,45,61,0.3)" }}>
+              <div className="flex items-center gap-1.5 text-xs">
+                <span style={{ color:"#4a5568" }}>Bid</span>
+                <span className="font-mono tabular-nums" style={{ color:"#ef4444" }}>{formatPrice(livePrice.bid)}</span>
+              </div>
+              <div className="flex items-center gap-1.5 text-xs">
+                <span style={{ color:"#4a5568" }}>Ask</span>
+                <span className="font-mono tabular-nums" style={{ color:"#10d48e" }}>{formatPrice(livePrice.ask)}</span>
+              </div>
+              <div className="flex items-center gap-1.5 text-xs">
+                <span style={{ color:"#4a5568" }}>Spread</span>
+                <span className="font-mono tabular-nums" style={{ color:"#9fa8b4" }}>{formatPrice(livePrice.ask - livePrice.bid)}</span>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* ── Full-width chart — 280px on mobile, 500px on desktop ── */}
@@ -289,22 +393,29 @@ export default function DashTrade() {
             {/* Mobile: horizontal scroll row; desktop: vertical list */}
             <div className="flex lg:flex-col gap-2 overflow-x-auto pb-1 lg:overflow-x-visible lg:max-h-96 lg:overflow-y-auto">
               {INSTRUMENTS.map(inst => {
-                const pd  = watchlist[inst.base];
-                const sel = selectedBase === inst.base;
-                const chg = pd?.change24h ?? 0;
+                const pd    = watchlist[inst.base];
+                const sel   = selectedBase === inst.base;
+                const chg   = pd?.change24h ?? 0;
+                const flash = wFlash[inst.base];
+                const bg = flash === "up" ? "rgba(16,212,142,0.16)"
+                         : flash === "down" ? "rgba(239,68,68,0.16)"
+                         : sel ? "rgba(16,212,142,0.08)" : "rgba(37,45,61,0.25)";
+                const border = flash ? `1px solid ${flash === "up" ? "rgba(16,212,142,0.4)" : "rgba(239,68,68,0.4)"}`
+                             : sel ? "1px solid rgba(16,212,142,0.3)" : "1px solid rgba(37,45,61,0.4)";
                 return (
                   <button key={inst.base} onClick={() => setSelectedBase(inst.base)}
-                    className="flex-shrink-0 lg:flex-shrink lg:w-full flex items-center justify-between px-3 py-2.5 rounded-md transition-all text-left"
+                    className="flex-shrink-0 lg:flex-shrink lg:w-full flex items-center justify-between px-3 py-2.5 rounded-md text-left"
                     style={{
                       minWidth: 120,
-                      background: sel?"rgba(16,212,142,0.08)":"rgba(37,45,61,0.25)",
-                      border: sel?"1px solid rgba(16,212,142,0.3)":"1px solid rgba(37,45,61,0.4)",
+                      background: bg,
+                      border,
+                      transition: "background-color 0.3s ease-out, border-color 0.3s ease-out",
                     }}>
                     <div>
                       <div className="text-xs font-bold whitespace-nowrap" style={{ color: sel?"#10d48e":"#9fa8b4" }}>{inst.base}</div>
-                      <div className="text-xs" style={{ color: chg>=0?"#10d48e":"#ef4444" }}>{chg>=0?"+":""}{chg.toFixed(1)}%</div>
+                      <div className="text-xs tabular-nums" style={{ color: chg>=0?"#10d48e":"#ef4444" }}>{chg>=0?"+":""}{chg.toFixed(1)}%</div>
                     </div>
-                    <div className="text-xs font-mono font-bold ml-2 whitespace-nowrap" style={{ color: sel?"#f0ede8":"#6b7a8d" }}>
+                    <div className="text-xs font-mono font-bold tabular-nums ml-2 whitespace-nowrap" style={{ color: sel?"#f0ede8":"#6b7a8d" }}>
                       {pd ? formatPrice(pd.price) : "—"}
                     </div>
                   </button>
@@ -363,20 +474,24 @@ function StartModal({ wallet, starting, error, onStart, onClose }: {
             <button onClick={() => onStart("demo")} disabled={starting}
               className="flex flex-col items-center gap-2 p-5 rounded-lg"
               style={{ border:"1px solid rgba(0,188,212,0.3)", background:"rgba(0,188,212,0.05)", minHeight:"unset" }}>
-              <div className="text-2xl" style={{ color:"#00bcd4" }}>◎</div>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00bcd4" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+              </svg>
               <div className="font-bold text-sm" style={{ color:"#f0ede8" }}>Demo</div>
               <div className="text-xs" style={{ color:"#4a5568" }}>Paper money</div>
-              <div className="text-xs font-mono font-bold" style={{ color:"#00bcd4" }}>
+              <div className="text-xs font-mono font-bold tabular-nums" style={{ color:"#00bcd4" }}>
                 ${(wallet?.demoBalance ?? 0).toLocaleString()}
               </div>
             </button>
             <button onClick={() => onStart("live")} disabled={starting}
               className="flex flex-col items-center gap-2 p-5 rounded-lg"
               style={{ border:"1px solid rgba(16,212,142,0.3)", background:"rgba(16,212,142,0.05)", minHeight:"unset" }}>
-              <div className="text-2xl" style={{ color:"#10d48e" }}>$</div>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10d48e" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+              </svg>
               <div className="font-bold text-sm" style={{ color:"#f0ede8" }}>Live</div>
               <div className="text-xs" style={{ color:"#4a5568" }}>Real funds</div>
-              <div className="text-xs font-mono font-bold" style={{ color: (wallet?.liveBalance??0)>0?"#10d48e":"#ef4444" }}>
+              <div className="text-xs font-mono font-bold tabular-nums" style={{ color: (wallet?.liveBalance??0)>0?"#10d48e":"#ef4444" }}>
                 ${(wallet?.liveBalance ?? 0).toLocaleString()}
               </div>
             </button>

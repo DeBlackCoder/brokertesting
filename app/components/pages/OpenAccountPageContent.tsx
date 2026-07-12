@@ -11,9 +11,9 @@ const STEPS = [
 ];
 
 const ACCOUNT_TYPES = [
-  { id: "individual",   title: "Individual",   description: "For high-net-worth individuals trading their own capital.",             min: "$250,000",   badge: null          },
-  { id: "institutional",title: "Institutional",description: "For hedge funds, family offices, and asset managers.",                 min: "$5,000,000",  badge: "Most Common" },
-  { id: "corporate",    title: "Corporate",    description: "For trading companies, proprietary trading firms, and corporations.",  min: "$1,000,000",  badge: null          },
+  { id: "individual",    title: "Individual",    description: "For individuals trading their own capital.",                         min: "$500 – $5,000",    badge: null          },
+  { id: "institutional", title: "Institutional", description: "For hedge funds, family offices, and asset managers.",              min: "$5,000 – $50,000", badge: "Most Common" },
+  { id: "corporate",     title: "Corporate",     description: "For trading companies, proprietary trading firms, and corporations.",min: "$50,000+",          badge: null          },
 ];
 
 type FormData = {
@@ -391,8 +391,8 @@ export default function OpenAccountPageContent() {
                 <div className="space-y-5">
                   {([
                     { label: "Employment Status",                  field: "employmentStatus"  as keyof FormData, options: ["Employed","Self-employed","Business owner","Retired","Other"] },
-                    { label: "Annual Income",                      field: "annualIncome"      as keyof FormData, options: ["$50,000 – $100,000","$100,000 – $250,000","$250,000 – $500,000","$500,000 – $1,000,000","$1,000,000+"] },
-                    { label: "Net Worth (excl. primary residence)",field: "netWorth"          as keyof FormData, options: ["$250,000 – $500,000","$500,000 – $1,000,000","$1,000,000 – $5,000,000","$5,000,000 – $25,000,000","$25,000,000+"] },
+                    { label: "Annual Income",                      field: "annualIncome"      as keyof FormData, options: ["Under $10,000","$10,000 – $50,000","$50,000 – $100,000","$100,000 – $250,000","$250,000+"] },
+                    { label: "Net Worth (excl. primary residence)",field: "netWorth"          as keyof FormData, options: ["Under $5,000","$5,000 – $50,000","$50,000 – $250,000","$250,000 – $1,000,000","$1,000,000+"] },
                     { label: "Trading Experience",                 field: "tradingExperience" as keyof FormData, options: ["Less than 1 year","1–3 years","3–5 years","5–10 years","10+ years"] },
                     { label: "Source of Funds",                    field: "sourceOfFunds"     as keyof FormData, options: ["Employment income","Business profits","Investments","Inheritance","Property sale","Other"] },
                   ] as const).map(f => (

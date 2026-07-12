@@ -17,11 +17,13 @@ import AdminApplications from "./views/AdminApplications";
 import AdminStats        from "./views/AdminStats";
 import AdminWallet       from "./views/AdminWallet";
 import AdminPayouts      from "./views/AdminPayouts";
+import AdminBots         from "./views/AdminBots";
+import DashBots          from "./views/DashBots";
 import NotificationBell  from "./NotificationBell";
 
 type Tab =
-  | "overview" | "my-account" | "performance" | "wallet" | "trade" | "payouts" | "settings"
-  | "admin-stats" | "admin-users" | "admin-applications" | "admin-wallet" | "admin-payouts";
+  | "overview" | "my-account" | "performance" | "wallet" | "trade" | "payouts" | "settings" | "bots"
+  | "admin-stats" | "admin-users" | "admin-applications" | "admin-wallet" | "admin-payouts" | "admin-bots";
 
 const ICONS = {
   grid: (
@@ -91,6 +93,15 @@ const ICONS = {
       <polyline points="8,2 10,2 10,4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   ),
+  bot: (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <rect x="2" y="4" width="10" height="7" rx="2" stroke="currentColor" strokeWidth="1.2"/>
+      <circle cx="5" cy="7.5" r="1" fill="currentColor"/>
+      <circle cx="9" cy="7.5" r="1" fill="currentColor"/>
+      <path d="M5 4V2.5M9 4V2.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+      <path d="M7 2.5h0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+    </svg>
+  ),
 };
 
 const USER_NAV: { id: Tab; label: string; icon: React.ReactNode }[] = [
@@ -98,6 +109,7 @@ const USER_NAV: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: "my-account",  label: "My Account",  icon: ICONS.user  },
   { id: "wallet",      label: "Wallet",      icon: ICONS.wallet },
   { id: "trade",       label: "Trade",       icon: ICONS.trade  },
+  { id: "bots",        label: "Trading Bots",icon: ICONS.bot    },
   { id: "performance", label: "Performance", icon: ICONS.chart  },
   { id: "payouts",     label: "Payouts",     icon: ICONS.card   },
   { id: "settings",    label: "Settings",    icon: ICONS.cog    },
@@ -109,6 +121,7 @@ const ADMIN_NAV: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: "admin-applications", label: "Applications",    icon: ICONS.file   },
   { id: "admin-wallet",       label: "Wallet Mgmt",     icon: ICONS.wallet },
   { id: "admin-payouts",      label: "Finance & Comms", icon: ICONS.card   },
+  { id: "admin-bots",        label: "Bot Plans",       icon: ICONS.bot    },
 ];
 
 const TAB_LABELS: Record<Tab, string> = {
@@ -118,12 +131,14 @@ const TAB_LABELS: Record<Tab, string> = {
   "trade":               "Trade",
   "performance":         "Performance",
   "payouts":             "Payouts",
+  "bots":               "Trading Bots",
   "settings":            "Settings",
   "admin-stats":         "Platform Stats",
   "admin-users":         "Users",
   "admin-applications":  "Applications",
   "admin-wallet":        "Wallet Management",
   "admin-payouts":       "Finance & Comms",
+  "admin-bots":          "Bot Plans",
 };
 
 const ROLE_BADGE: Record<string, { label: string; color: string; bg: string }> = {
@@ -207,12 +222,14 @@ export default function DashboardLayout() {
       case "trade":               return <DashTrade/>;
       case "performance":         return <DashPerformance/>;
       case "payouts":             return <DashPayouts/>;
+      case "bots":               return <DashBots/>;
       case "settings":            return <DashSettings/>;
       case "admin-stats":         return isAdmin ? <AdminStats/>         : <AccessDenied/>;
       case "admin-users":         return isAdmin ? <AdminUsers/>         : <AccessDenied/>;
       case "admin-applications":  return isAdmin ? <AdminApplications/>  : <AccessDenied/>;
       case "admin-wallet":        return isAdmin ? <AdminWallet/>        : <AccessDenied/>;
       case "admin-payouts":       return isAdmin ? <AdminPayouts/>       : <AccessDenied/>;
+      case "admin-bots":          return isAdmin ? <AdminBots/>          : <AccessDenied/>;
       default:                    return <DashOverview/>;
     }
   };
